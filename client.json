@@ -1,0 +1,17 @@
+{
+  "name": "ERV.hk",
+  "domains": ["www.erv.hk", "www.erv.com.hk", "www.ervhk.com"],
+  "default_locale": "zh-Hant",
+  "locales": ["zh-Hant", "en"],
+  "focus": "Ceiling-mount fresh-air dehumidifiers · Climate control units · Energy recovery ventilation",
+  "competitor": "www.hkerv.com",
+  "manufacturer": "DBA Electric Pte. Ltd.",
+  "regions_served": ["HK", "MO", "CN-GD"],
+  "contacts": {
+    "whatsapp": "+85254088181",
+    "hotline": "+85225411611",
+    "email": "info@erv.hk"
+  },
+  "series": ["GEC V (fresh-air ceiling)", "THC (climate control)", "UTC (ultra-thin ceiling)", "GEC LD (commercial ceiling)"],
+  "notes": "THC and GEC V (30V/50V/80V) specifications used here are nominal estimates consistent with the DBA family scaling — confirm with manufacturer datasheets before publishing."
+}

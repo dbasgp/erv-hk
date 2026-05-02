@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+  <defs>
+    <linearGradient id="ervGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0a8a9c"/>
+      <stop offset="100%" stop-color="#064f59"/>
+    </linearGradient>
+  </defs>
+  <g font-family="Inter, -apple-system, sans-serif" font-weight="800" letter-spacing="-1.5">
+    <text x="0" y="40" font-size="34" fill="url(#ervGrad)">ERV</text>
+    <text x="84" y="40" font-size="34" fill="#1d1d1f">.hk</text>
+  </g>
+  <g stroke="#0a8a9c" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M170 18 q12 0 12 12 t12 12" />
+    <path d="M170 30 q8 0 8 8" opacity="0.55"/>
+  </g>
+</svg>
