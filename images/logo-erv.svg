@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 753.06 132.8">
   <defs>
-    <linearGradient id="ervGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#0a8a9c"/>
-      <stop offset="100%" stop-color="#064f59"/>
-    </linearGradient>
+    <style>
+      .cls-1 {
+        fill: #0023ff;
+      }
+    </style>
   </defs>
-  <g font-family="Inter, -apple-system, sans-serif" font-weight="800" letter-spacing="-1.5">
-    <text x="0" y="40" font-size="34" fill="url(#ervGrad)">ERV</text>
-    <text x="84" y="40" font-size="34" fill="#1d1d1f">.hk</text>
-  </g>
-  <g stroke="#0a8a9c" stroke-width="2" fill="none" stroke-linecap="round">
-    <path d="M170 18 q12 0 12 12 t12 12" />
-    <path d="M170 30 q8 0 8 8" opacity="0.55"/>
-  </g>
+  <path class="cls-1" d="M0,0h109.97v28.35H41.13v21.11h63.86v27.09h-63.86v26.18h70.84v30.08H0V0Z"/>
+  <path class="cls-1" d="M134.61,132.8V0h68.39c12.68,0,22.38,1.09,29.08,3.26s12.11,6.21,16.22,12.09c4.11,5.89,6.16,13.06,6.16,21.51,0,7.37-1.57,13.72-4.71,19.07s-7.46,9.68-12.96,13c-3.5,2.11-8.31,3.87-14.41,5.25,4.89,1.63,8.45,3.27,10.68,4.9,1.51,1.09,3.7,3.42,6.56,6.98,2.87,3.57,4.78,6.32,5.75,8.25l19.87,38.48h-46.37l-21.93-40.58c-2.78-5.25-5.25-8.67-7.43-10.24-2.96-2.05-6.31-3.08-10.06-3.08h-3.62v53.9h-41.22ZM175.83,53.81h17.3c1.87,0,5.49-.6,10.87-1.81,2.72-.54,4.94-1.93,6.66-4.17,1.72-2.23,2.58-4.8,2.58-7.7,0-4.29-1.36-7.58-4.08-9.87-2.72-2.29-7.82-3.44-15.31-3.44h-18.03v27Z"/>
+  <path class="cls-1" d="M262.16,0h42.9l29.89,95.57L364.46,0h41.65l-49.31,132.8h-44.48L262.16,0Z"/>
+  <path class="cls-1" d="M393.42,95.84h39.41v36.96h-39.41v-36.96Z"/>
+  <path class="cls-1" d="M457.74,0h41.04v46.47h44.84V0h41.22v132.8h-41.22v-53.72h-44.84v53.72h-41.04V0Z"/>
+  <path class="cls-1" d="M612.29,0h41.04v50.19L696.31,0h54.58l-48.46,50.13,50.64,82.68h-50.53l-28-54.62-21.2,22.21v32.41h-41.04V0Z"/>
 </svg>

@@ -16,8 +16,8 @@ body.product-page { padding-top: 0; }
 
 .ph-hero {
   background:
-    radial-gradient(circle at 12% 20%, rgba(31,110,60,0.10), transparent 55%),
-    linear-gradient(180deg, #f7faf5 0%, #ffffff 70%);
+    radial-gradient(circle at 12% 20%, rgba(0,35,255,0.08), transparent 55%),
+    linear-gradient(180deg, #f4f5fa 0%, #ffffff 70%);
   padding: 80px 0 80px;
   position: relative;
   overflow: hidden;
@@ -93,16 +93,16 @@ body.product-page { padding-top: 0; }
   background: #fff;
   border-radius: 28px;
   border: 1px solid var(--line);
-  padding: 50px;
+  padding: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 1/1;
-  max-width: 520px;
+  max-width: 540px;
   margin-left: auto;
-  box-shadow: 0 30px 60px rgba(14,69,36,0.10);
+  box-shadow: 0 30px 60px rgba(0,27,184,0.10);
 }
-.ph-visual img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.ph-visual img { width: 100%; height: 100%; object-fit: contain; }
 
 /* Highlights */
 .ph-highlights { padding: 100px 0; background: #fff; }
@@ -170,7 +170,7 @@ body.product-page { padding-top: 0; }
   transition: transform 0.3s var(--ease), background 0.3s;
 }
 .ph-rel-card:hover { transform: translateY(-3px); background: var(--bg-tint); }
-.ph-rel-card img { height: 140px; object-fit: contain; margin-bottom: 16px; }
+.ph-rel-card img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 16px; background: #fff; border: 1px solid var(--line-soft); border-radius: 10px; padding: 6px; }
 .ph-rel-card h4 { margin-bottom: 6px; }
 .ph-rel-card p { font-size: 13.5px; color: var(--muted); margin-bottom: 12px; flex: 1; }
 .ph-rel-link { font-size: 13px; font-weight: 600; color: var(--primary); }
