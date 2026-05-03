@@ -87,7 +87,7 @@ def page_chrome(c, page_num, total, series_label):
     draw_text(c, MARGIN + 270, fy, "Hotline +852 2121 0968", font=LATIN, size=9, color=MUTED)
     draw_text_right(c, W - MARGIN, fy, "erv@erv.hk", font=LATIN, size=9, color=MUTED)
 
-def cover(c, series_code, title_en, title_zh, lead_en, lead_zh, model_count, capacity_label):
+def cover(c, series_code, title_en, title_zh, lead_en, lead_zh, model_list, capacity_label):
     fill_bg(c, NAVY)
     # Decorative blocks
     c.setFillColor(BLUE)
@@ -110,21 +110,44 @@ def cover(c, series_code, title_en, title_zh, lead_en, lead_zh, model_count, cap
     c.setFont(CJK, 26)
     c.drawString(MARGIN, H - 290, title_zh)
 
-    # Stat row
+    # Stat row — models list + capacity
     stat_y = H - 380
     hline(c, MARGIN, stat_y + 50, W - MARGIN, color=LINE, w=0.8)
-    col_w = (W - 2 * MARGIN) / 3
-    stats = [
-        ("MODELS", str(model_count)),
-        ("CAPACITY", capacity_label),
-        ("MARKET", "Hong Kong"),
-    ]
-    for i, (label, value) in enumerate(stats):
-        cx = MARGIN + i * col_w
-        draw_eyebrow(c, cx, stat_y + 32, label, color=SUBTLE)
-        c.setFont(LATIN_B, 22)
-        c.setFillColor(white)
-        c.drawString(cx, stat_y, value)
+    models_str = "  ·  ".join(model_list)
+    cap_w = 200  # right column reserved for capacity
+    models_x = MARGIN
+    cap_x = W - MARGIN - cap_w
+
+    draw_eyebrow(c, models_x, stat_y + 32, "MODELS", color=SUBTLE)
+    # Auto-fit; wrap to two lines if still too wide at 14pt.
+    avail = cap_x - models_x - 20
+    size = 22
+    c.setFont(LATIN_B, size)
+    while c.stringWidth(models_str, LATIN_B, size) > avail and size > 14:
+        size -= 1
+        c.setFont(LATIN_B, size)
+    c.setFillColor(white)
+    if c.stringWidth(models_str, LATIN_B, size) > avail and len(model_list) > 3:
+        # Split into two rows; auto-fit each line independently.
+        half = (len(model_list) + 1) // 2
+        line1 = "  ·  ".join(model_list[:half])
+        line2 = "  ·  ".join(model_list[half:])
+        size = 16
+        while size > 10 and (
+            c.stringWidth(line1, LATIN_B, size) > avail
+            or c.stringWidth(line2, LATIN_B, size) > avail
+        ):
+            size -= 1
+        c.setFont(LATIN_B, size)
+        c.drawString(models_x, stat_y + 10, line1)
+        c.drawString(models_x, stat_y - 12, line2)
+    else:
+        c.drawString(models_x, stat_y, models_str)
+
+    draw_eyebrow(c, cap_x, stat_y + 32, "CAPACITY", color=SUBTLE)
+    c.setFont(LATIN_B, 22)
+    c.setFillColor(white)
+    c.drawString(cap_x, stat_y, capacity_label)
     hline(c, MARGIN, stat_y - 18, W - MARGIN, color=LINE, w=0.8)
 
     # Lead paragraph
@@ -406,7 +429,7 @@ def gen_gec_v():
           "新風淨化天花式抽濕機",
           "Fresh air × dehumidification × HEPA filtration in one ceiling unit. Independent fresh-air valve, return-air valve, HEPA filter, and a 5-in-1 air detector — auto-switching across dehumidify, fresh-air, mixed, and intelligent modes.",
           "新風 × 抽濕 × HEPA 過濾，一台天花機完成。獨立新風閥、回風閥、HEPA 高效濾網與五合一空氣探測器，可於抽濕、新風、混合、智能四個模式之間自動切換。",
-          4, "30–110 L/day")
+          ["GEC30V", "GEC50V", "GEC70V", "GEC110V"], "30–110 L/day")
 
     overview_page(c, 2, total, series_label, "GEC V",
                   "The GEC V Series is the flagship fresh-air ceiling dehumidifier engineered for Hong Kong's sub-tropical climate. It maintains target humidity while continuously introducing HEPA-filtered outdoor air — solving CO2 build-up, PM2.5, cooking odours, and humidity in a single concealed unit. The 5-in-1 air detector reads PM2.5, CO2, VOC, temperature, and relative humidity, switching modes automatically.",
@@ -514,7 +537,7 @@ def gen_utc():
           "超薄天花式抽濕機",
           "A 200 mm slim profile that disappears into any false ceiling. Pure precision dehumidification from 39 dB(A) — quieter than a hushed conversation. UV-C lamp, WiFi App, RS485 BMS, and Hong Kong Grade 1 Energy Label on the entry model.",
           "200 mm 超薄機身，無聲融入假天花。專注於高效抽濕，39 dB(A) 起 — 比安靜對話更輕。配備 UV-C 殺菌、WiFi App、RS485 BMS，UTC20 取得香港一級能源標籤。",
-          3, "20–120 L/day")
+          ["UTC20", "UTC68", "UTC120"], "20–120 L/day")
 
     overview_page(c, 2, total, series_label, "UTC",
                   "The UTC Series prioritises absolute precision dehumidification with a near-silent profile. At only 200 mm thick (UTC20), it disappears into any false ceiling and is ideal as a humidity supplement when fresh-air ventilation is already handled separately. UV-C sterilisation, scheduled timers, WiFi App, and RS485 Modbus BMS are standard.",
@@ -613,7 +636,7 @@ def gen_gec_commercial():
           "商用天花式抽濕機",
           "High static pressure ducted ceiling dehumidifiers built for large floors and multi-room distribution. RS485 BMS standard, 68 to 550 L/day capacity. Engineered for offices, retail, hotel ballrooms, indoor pools, and large clubhouses.",
           "為大空間設計的高靜壓商用天花機 — 商廈辦公室、零售商舖、酒店宴會廳、室內泳池、大型會所。RS485 BMS 標配，68 至 550 公升 / 日抽濕量任選，多區管道分送。",
-          5, "68–550 L/day")
+          ["GEC68LD-HP", "GEC145LD-HP", "GEC280LD", "GEC400LD", "GEC550LD"], "68–550 L/day")
 
     overview_page(c, 2, total, series_label, "GEC",
                   "The GEC commercial ceiling series handles large floor plates and ducted multi-zone distribution that smaller residential units cannot serve. High static pressure (up to 80 Pa) drives air through long duct runs, while the stainless evaporator and pump drainage suit demanding industrial and commercial environments. Five capacity points cover everything from a 1,000 sq ft retail unit to a 5,000 sq ft hotel ballroom.",
