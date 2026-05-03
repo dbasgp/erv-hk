@@ -80,19 +80,23 @@ def hline(c, x1, y, x2, color=LINE, w=0.5):
     c.setLineWidth(w)
     c.line(x1, y, x2, y)
 
-def draw_image_fit(c, path, x, y, w, h, bg=PANEL, border=LINE):
-    """Draw an image fitted within (x,y,w,h) on a panel; preserves aspect."""
+def draw_image_fit(c, path, x, y, w, h, bg=white, border=None):
+    """Draw an image fitted within (x,y,w,h); preserves aspect.
+
+    Default is pure white background with no border, so product photos sit
+    cleanly on the page.
+    """
     if not Path(path).exists():
         c.setFillColor(bg)
         c.roundRect(x, y, w, h, 8, fill=1, stroke=0)
         return
-    # Panel
-    c.setFillColor(bg)
-    c.roundRect(x, y, w, h, 8, fill=1, stroke=0)
-    c.setStrokeColor(border)
-    c.setLineWidth(0.5)
-    c.roundRect(x, y, w, h, 8, fill=0, stroke=1)
-    # Image
+    if bg is not None:
+        c.setFillColor(bg)
+        c.roundRect(x, y, w, h, 8, fill=1, stroke=0)
+    if border is not None:
+        c.setStrokeColor(border)
+        c.setLineWidth(0.5)
+        c.roundRect(x, y, w, h, 8, fill=0, stroke=1)
     img = ImageReader(path)
     iw, ih = img.getSize()
     pad = 8
@@ -146,7 +150,7 @@ def cover(c, series_code, title_en, title_zh, lead_en, lead_zh,
     hero_y = H - 360  # bottom edge → image spans H-100 to H-360
     if hero_image:
         draw_image_fit(c, str(IMG_DIR / hero_image), hero_x, hero_y, hero_w, hero_h,
-                       bg=PANEL, border=LINE)
+                       bg=white, border=None)
 
     # Series tag
     draw_eyebrow(c, MARGIN, H - 160, f"PRODUCT CATALOG / {series_code} SERIES", color=ACCENT_D)
@@ -269,7 +273,7 @@ def overview_page(c, page_num, total, series_label, series_code,
         img_h = 240
         draw_image_fit(c, str(IMG_DIR / hero_image),
                        img_x, y - img_h + 10, img_w, img_h,
-                       bg=PANEL, border=LINE)
+                       bg=white, border=None)
 
     y = min(ty, y - 240) - 24
 
@@ -357,7 +361,7 @@ def specs_page(c, page_num, total, series_label, series_code, models, columns):
             draw_image_fit(c, str(IMG_DIR / m["image"]),
                            cx + img_pad, img_y,
                            col_w - 2 * img_pad, img_h,
-                           bg=PANEL, border=LINE_SOFT)
+                           bg=white, border=None)
     y = img_y - 12
 
     # Header row — model names
