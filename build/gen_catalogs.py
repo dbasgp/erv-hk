@@ -168,8 +168,8 @@ def cover(c, series_code, title_en, title_zh, lead_en, lead_zh, model_list, capa
     c.rect(0, 0, W, 90, fill=1, stroke=0)
     draw_text(c, MARGIN, cf_y + 12, "Manufactured for ERV.hk by HK Environmental Electrical Appliance Limited",
               font=LATIN, size=9, color=MUTED)
-    draw_text(c, MARGIN, cf_y - 6, "www.erv.hk  ·  www.erv.com.hk  ·  www.ervhk.com",
-              font=LATIN_B, size=10, color=white)
+    draw_text(c, MARGIN, cf_y - 6, "www.erv.hk",
+              font=LATIN_B, size=12, color=white)
     draw_text_right(c, W - MARGIN, cf_y + 12, "erv@erv.hk",
                     font=LATIN, size=9, color=ACCENT)
     draw_text_right(c, W - MARGIN, cf_y - 6, "WhatsApp +852 8404 3880",
@@ -295,102 +295,109 @@ def specs_page(c, page_num, total, series_label, series_code, models, columns):
     y -= row_h
     hline(c, table_x, y, table_x + table_w, color=LINE, w=0.6)
 
-    # Body rows
+    # Body rows — auto-fit row height to total rows
+    n_rows = len(columns)
+    body_h = 22 if n_rows >= 12 else (24 if n_rows >= 10 else 26)
+    label_size = 9 if n_rows >= 12 else 9.5
+    val_size = 9.5 if n_rows >= 12 else 10
     for ridx, (key, label_en, label_zh) in enumerate(columns):
-        body_h = 26
         if ridx % 2 == 0:
             c.setFillColor(Color(1, 1, 1, alpha=0.025))
             c.rect(table_x, y - body_h, table_w, body_h, fill=1, stroke=0)
         # Label
-        c.setFont(LATIN_B, 9.5)
+        c.setFont(LATIN_B, label_size)
         c.setFillColor(white)
-        c.drawString(table_x + 12, y - 16, label_en)
-        c.setFont(CJK, 8.5)
+        c.drawString(table_x + 12, y - 13, label_en)
+        c.setFont(CJK, label_size - 1)
         c.setFillColor(SUBTLE)
-        c.drawString(table_x + 12, y - 24, label_zh)
-        # Values
+        c.drawString(table_x + 12, y - 13 - (label_size + 1), label_zh)
+        # Values — wrap if too wide for col
         for i, m in enumerate(models):
             cx = table_x + label_w + i * col_w
             val = m["specs"].get(key, "—")
-            c.setFont(LATIN, 10.5)
+            size = val_size
+            c.setFont(LATIN, size)
+            while c.stringWidth(val, LATIN, size) > col_w - 8 and size > 7:
+                size -= 0.5
+                c.setFont(LATIN, size)
             c.setFillColor(white)
-            c.drawCentredString(cx + col_w / 2, y - 16, val)
+            c.drawCentredString(cx + col_w / 2, y - body_h / 2 - 3, val)
         y -= body_h
         hline(c, table_x, y, table_x + table_w, color=LINE, w=0.4)
     c.showPage()
 
-def picker_page(c, page_num, total, series_label, series_code, picker_rows):
+def config_page(c, page_num, total, series_label, series_code, config_items, control_items):
+    """Page 4: Configuration & Smart Control bullet lists in two columns."""
     fill_bg(c, NAVY)
     page_chrome(c, page_num, total, series_label)
 
     y = H - 90
-    draw_eyebrow(c, MARGIN, y, f"03  HOW TO PICK A {series_code} MODEL")
+    draw_eyebrow(c, MARGIN, y, f"03  {series_code} CONFIGURATION & CONTROL")
     y -= 26
     c.setFont(LATIN_B, 22)
     c.setFillColor(white)
-    c.drawString(MARGIN, y, "Sizing guide")
+    c.drawString(MARGIN, y, "Configuration & control")
     y -= 12
     c.setFont(LATIN, 10)
     c.setFillColor(MUTED)
-    en_text = "Match the right unit to the room load.  /  "
+    en_text = "Standard configuration and control features.  /  "
     c.drawString(MARGIN, y, en_text)
     c.setFont(CJK, 10)
-    c.drawString(MARGIN + c.stringWidth(en_text, LATIN, 10), y, "按面積選型")
-    y -= 30
+    c.drawString(MARGIN + c.stringWidth(en_text, LATIN, 10), y, "標配項目與控制功能")
+    y -= 38
 
-    # Header
-    table_x = MARGIN
-    table_w = W - 2 * MARGIN
-    cols = [("ROOM TYPE", 0.30), ("FLOOR AREA", 0.22), ("RECOMMENDED", 0.28), ("NOTES", 0.20)]
-    c.setFillColor(NAVY_2)
-    c.rect(table_x, y - 28, table_w, 28, fill=1, stroke=0)
-    cx = table_x
-    for label, frac in cols:
-        c.setFont(LATIN_B, 9)
-        c.setFillColor(SUBTLE)
-        c.drawString(cx + 12, y - 18, label)
-        cx += table_w * frac
-    y -= 28
-    hline(c, table_x, y, table_x + table_w, color=LINE, w=0.6)
+    # Two-column cards
+    col_w = (W - 2 * MARGIN - 24) / 2
+    col1_x = MARGIN
+    col2_x = MARGIN + col_w + 24
+    box_h = 360
 
-    # Rows
-    for i, row in enumerate(picker_rows):
-        body_h = 36
-        if i % 2 == 0:
-            c.setFillColor(Color(1, 1, 1, alpha=0.025))
-            c.rect(table_x, y - body_h, table_w, body_h, fill=1, stroke=0)
-        cx = table_x
-        for (label, frac), val in zip(cols, row):
-            tx = cx + 12
-            if label == "RECOMMENDED":
-                c.setFont(LATIN_B, 11)
-                c.setFillColor(ACCENT)
-            else:
-                c.setFont(LATIN, 10.5)
-                c.setFillColor(white)
-            c.drawString(tx, y - 22, val)
-            cx += table_w * frac
-        y -= body_h
-        hline(c, table_x, y, table_x + table_w, color=LINE, w=0.4)
+    for col_x, head_label, items in [
+        (col1_x, "CONFIGURATION", config_items),
+        (col2_x, "SMART CONTROL", control_items),
+    ]:
+        # Card background
+        c.setFillColor(NAVY_2)
+        c.roundRect(col_x, y - box_h, col_w, box_h, 12, fill=1, stroke=0)
+        c.setStrokeColor(LINE)
+        c.roundRect(col_x, y - box_h, col_w, box_h, 12, fill=0, stroke=1)
+        # Heading
+        cy = y - 26
+        draw_eyebrow(c, col_x + 22, cy, head_label)
+        cy -= 26
+        c.setFont(LATIN_B, 14)
+        c.setFillColor(white)
+        c.drawString(col_x + 22, cy,
+                     "What's standard" if head_label == "CONFIGURATION" else "Built-in intelligence")
+        cy -= 26
+        # Items: bullet + bilingual
+        for it_en, it_zh in items:
+            # bullet
+            c.setFillColor(ACCENT)
+            c.circle(col_x + 28, cy + 3, 2, fill=1, stroke=0)
+            c.setFont(LATIN_B, 10)
+            c.setFillColor(white)
+            c.drawString(col_x + 38, cy, it_en)
+            cy -= 12
+            c.setFont(CJK, 9)
+            c.setFillColor(SUBTLE)
+            c.drawString(col_x + 38, cy, it_zh)
+            cy -= 16
 
-    # CTA card
-    y -= 36
-    card_h = 130
+    y -= box_h + 28
+
+    # CTA strip (compact)
+    card_h = 80
     c.setFillColor(BLUE)
     c.roundRect(MARGIN, y - card_h, W - 2 * MARGIN, card_h, 12, fill=1, stroke=0)
-    c.setFont(LATIN_B, 14)
+    c.setFont(LATIN_B, 13)
     c.setFillColor(white)
-    c.drawString(MARGIN + 24, y - 30, "Free site assessment, 24-hour response")
-    c.setFont(CJK, 12)
-    c.drawString(MARGIN + 24, y - 50, "免費場地評估 · 一個工作天回覆")
-    c.setFont(LATIN, 10)
-    c.setFillColor(Color(1, 1, 1, alpha=0.9))
-    cta_lines = _wrap("Tell us your floor area, ceiling height, target RH and timeline. A Hong Kong engineer will reply with model recommendation, pricing, lead-time, and a site survey appointment.", 88)
-    for i, line in enumerate(cta_lines):
-        c.drawString(MARGIN + 24, y - 70 - i * 14, line)
-    c.setFont(LATIN_B, 11)
+    c.drawString(MARGIN + 22, y - 28, "Free site assessment · 24-hour response")
+    c.setFont(CJK, 11)
+    c.drawString(MARGIN + 22, y - 46, "免費場地評估 · 一個工作天回覆")
+    c.setFont(LATIN_B, 10.5)
     c.setFillColor(ACCENT)
-    c.drawString(MARGIN + 24, y - card_h + 16, "→ www.erv.hk/#quote   ·   WhatsApp +852 8404 3880   ·   erv@erv.hk")
+    c.drawString(MARGIN + 22, y - 64, "→ www.erv.hk/#quote   ·   WhatsApp +852 8404 3880   ·   erv@erv.hk")
 
     c.showPage()
 
@@ -429,7 +436,7 @@ def gen_gec_v():
           "新風淨化天花式抽濕機",
           "Fresh air × dehumidification × HEPA filtration in one ceiling unit. Independent fresh-air valve, return-air valve, HEPA filter, and a 5-in-1 air detector — auto-switching across dehumidify, fresh-air, mixed, and intelligent modes.",
           "新風 × 抽濕 × HEPA 過濾，一台天花機完成。獨立新風閥、回風閥、HEPA 高效濾網與五合一空氣探測器，可於抽濕、新風、混合、智能四個模式之間自動切換。",
-          ["GEC30V", "GEC50V", "GEC70V", "GEC110V"], "30–110 L/day")
+          ["DBA-GEC30V", "DBA-GEC50V", "DBA-GEC70V", "DBA-GEC110V"], "30–110 L/day")
 
     overview_page(c, 2, total, series_label, "GEC V",
                   "The GEC V Series is the flagship fresh-air ceiling dehumidifier engineered for Hong Kong's sub-tropical climate. It maintains target humidity while continuously introducing HEPA-filtered outdoor air — solving CO2 build-up, PM2.5, cooking odours, and humidity in a single concealed unit. The 5-in-1 air detector reads PM2.5, CO2, VOC, temperature, and relative humidity, switching modes automatically.",
@@ -456,66 +463,86 @@ def gen_gec_v():
 
     specs_page(c, 3, total, series_label, "GEC V",
                models=[
-                   {"name": "GEC30V", "specs": {
-                       "capacity": "30 L/day",
-                       "fresh_air": "0–170 CMH",
-                       "coverage": "200–400 sq ft",
-                       "airflow": "350 CMH",
-                       "noise": "38–50 dB(A)",
-                       "dim": "992 × 526 × 245",
-                       "weight": "39 kg",
-                       "power": "230V / 50Hz",
+                   {"name": "DBA-GEC30V", "specs": {
+                       "cap_30": "30 L/day", "cap_27": "10.8 L/day",
+                       "fresh_air": "0–170 CMH", "airflow": "350 CMH",
+                       "coverage": "200–400 sq ft", "noise": "38/50 dB(A)",
+                       "static": "100 Pa", "power": "330 / 440 W",
+                       "dim": "992 × 526 × 245 mm", "weight": "39 kg",
+                       "supply": "220-240V / 50Hz", "drain": "1.2 m",
+                       "ports": "Ø146 mm × 3", "refrig": "R134a / 260 g",
+                       "filter": "HEPA + SS mesh", "comm": "RS485 + Dry contact",
                    }},
-                   {"name": "GEC50V", "tag": "BESTSELLER", "specs": {
-                       "capacity": "50 L/day",
-                       "fresh_air": "0–225 CMH",
-                       "coverage": "400–600 sq ft",
-                       "airflow": "450 CMH",
-                       "noise": "42–50 dB(A)",
-                       "dim": "1004 × 560 × 255",
-                       "weight": "52 kg",
-                       "power": "230V / 50Hz",
+                   {"name": "DBA-GEC50V", "tag": "BESTSELLER", "specs": {
+                       "cap_30": "50 L/day", "cap_27": "26.4 L/day",
+                       "fresh_air": "0–225 CMH", "airflow": "450 CMH",
+                       "coverage": "400–600 sq ft", "noise": "42/50 dB(A)",
+                       "static": "100 Pa", "power": "520 / 780 W",
+                       "dim": "1,004 × 560 × 255 mm", "weight": "52 kg",
+                       "supply": "220-240V / 50Hz", "drain": "1.2 m",
+                       "ports": "Ø146 mm × 3", "refrig": "R410A / 400 g",
+                       "filter": "HEPA + SS mesh", "comm": "RS485 + Dry contact",
                    }},
-                   {"name": "GEC70V", "specs": {
-                       "capacity": "70 L/day",
-                       "fresh_air": "0–250 CMH",
-                       "coverage": "600–800 sq ft",
-                       "airflow": "500 CMH",
-                       "noise": "45–50 dB(A)",
-                       "dim": "1032 × 626 × 265",
-                       "weight": "60 kg",
-                       "power": "230V / 50Hz",
+                   {"name": "DBA-GEC70V", "specs": {
+                       "cap_30": "70 L/day", "cap_27": "—",
+                       "fresh_air": "0–250 CMH", "airflow": "500 CMH",
+                       "coverage": "600–800 sq ft", "noise": "45/50 dB(A)",
+                       "static": "100 Pa", "power": "—",
+                       "dim": "1,032 × 626 × 265 mm", "weight": "60 kg",
+                       "supply": "220-240V / 50Hz", "drain": "1.2 m",
+                       "ports": "Ø146 mm × 3", "refrig": "R410A",
+                       "filter": "HEPA + SS mesh", "comm": "RS485 + Dry contact",
                    }},
-                   {"name": "GEC110V", "specs": {
-                       "capacity": "110 L/day",
-                       "fresh_air": "0–450 CMH",
-                       "coverage": "800–1200 sq ft",
-                       "airflow": "900 CMH",
-                       "noise": "45–50 dB(A)",
-                       "dim": "1200 × 795 × 284",
-                       "weight": "71 kg",
-                       "power": "230V / 50Hz",
+                   {"name": "DBA-GEC110V", "specs": {
+                       "cap_30": "110 L/day", "cap_27": "52.8 L/day",
+                       "fresh_air": "0–450 CMH", "airflow": "900 CMH",
+                       "coverage": "800–1,200 sq ft", "noise": "45/50 dB(A)",
+                       "static": "100 Pa", "power": "1,020 / 1,415 W",
+                       "dim": "1,200 × 795 × 284 mm", "weight": "71 kg",
+                       "supply": "220-240V / 50Hz", "drain": "1.2 m",
+                       "ports": "Ø196 mm × 3", "refrig": "R410A / 900 g",
+                       "filter": "HEPA + SS mesh", "comm": "RS485 + Dry contact",
                    }},
                ],
                columns=[
-                   ("capacity",   "Dehumidification",  "抽濕量"),
-                   ("fresh_air",  "Fresh-air volume",  "新風量"),
-                   ("coverage",   "Coverage",          "適用面積"),
-                   ("airflow",    "Airflow",           "風量"),
-                   ("noise",      "Noise",             "噪音"),
-                   ("dim",        "Dimensions (mm)",   "尺寸"),
-                   ("weight",     "Weight",            "重量"),
-                   ("power",      "Power supply",      "電源"),
+                   ("cap_30",    "Capacity (30°C 80%)",   "抽濕量 (30°C 80%)"),
+                   ("cap_27",    "Capacity (26.7°C 60%)", "抽濕量 (26.7°C 60%)"),
+                   ("fresh_air", "Fresh-air supply",      "新風量"),
+                   ("airflow",   "Indoor airflow",        "室內風量"),
+                   ("coverage",  "Coverage",              "適用面積"),
+                   ("noise",     "Noise (3 m)",           "噪音 (3 米)"),
+                   ("static",    "Static pressure",       "靜壓"),
+                   ("power",     "Rated / Max power",     "額定 / 最大功率"),
+                   ("dim",       "Dimensions (L×W×H)",    "尺寸"),
+                   ("weight",    "Weight",                "重量"),
+                   ("supply",    "Power supply",          "電源"),
+                   ("drain",     "Drain pump head",       "水泵揚程"),
+                   ("ports",     "Air outlet / inlet",    "出 / 入風口"),
+                   ("refrig",    "Refrigerant",           "冷媒"),
+                   ("filter",    "Filtration",            "過濾"),
+                   ("comm",      "Connectivity",          "通訊"),
                ])
 
-    picker_page(c, 4, total, series_label, "GEC V",
-                picker_rows=[
-                    ("Studio / 1-bed", "200–400 sq ft",    "GEC30V",  "Single zone"),
-                    ("2-bed flat",     "400–600 sq ft",    "GEC50V",  "Whole-home"),
-                    ("3-bed flat",     "600–800 sq ft",    "GEC70V",  "Whole-home"),
-                    ("Duplex / large", "800–1,200 sq ft",  "GEC110V", "Multi-zone duct"),
-                    ("Hotel suite",    "400–700 sq ft",    "GEC50V",  "Per-suite quiet"),
-                    ("Clubhouse / gym","800+ sq ft",       "GEC110V", "High fresh-air"),
+    config_page(c, 4, total, series_label, "GEC V",
+                config_items=[
+                    ("Drain pump (1.2 m head)",            "排水泵 1.2 m 揚程"),
+                    ("HEPA high-efficiency filter",        "HEPA 高效空氣過濾網"),
+                    ("Stainless steel mesh pre-filter",    "不銹鋼網目濾網"),
+                    ("DC brushless inverter motor",        "直流無刷變頻電機"),
+                    ("5-in-1 air detector",                "五合一空氣探測器"),
+                    ("86×86 mm LCD touch panel",           "86×86mm LCD 彩色觸控屏"),
+                    ("Independent fresh / return valves",  "獨立新風閥及回風閥"),
+                    ("Concealed false-ceiling mount",      "天花式隱藏安裝"),
+                ],
+                control_items=[
+                    ("RH setpoint range 20–95%",          "濕度設定範圍 20–95%"),
+                    ("4 modes: dehumidify / fresh-air / mixed / smart", "四模式：抽濕 / 新風 / 混合 / 智能"),
+                    ("Low / high fan speed",              "低 / 高風速"),
+                    ("RS485 Modbus BMS interface",        "RS485 Modbus 樓宇管理接口"),
+                    ("Schedule on/off + power-off memory","定時開關機 + 斷電記憶"),
+                    ("Dry-contact input + fault detection","乾接點輸入 + 故障偵測"),
+                    ("PM2.5 / CO₂ / VOC / T / RH sensing","PM2.5 / CO₂ / VOC / 溫濕度感應"),
+                    ("Auto mode-switch by air quality",   "依空氣質素智能切換模式"),
                 ])
 
     c.save()
@@ -537,7 +564,7 @@ def gen_utc():
           "超薄天花式抽濕機",
           "A 200 mm slim profile that disappears into any false ceiling. Pure precision dehumidification from 39 dB(A) — quieter than a hushed conversation. UV-C lamp, WiFi App, RS485 BMS, and Hong Kong Grade 1 Energy Label on the entry model.",
           "200 mm 超薄機身，無聲融入假天花。專注於高效抽濕，39 dB(A) 起 — 比安靜對話更輕。配備 UV-C 殺菌、WiFi App、RS485 BMS，UTC20 取得香港一級能源標籤。",
-          ["UTC20", "UTC68", "UTC120"], "20–120 L/day")
+          ["DBA-UTC20", "DBA-UTC68", "DBA-UTC120"], "20–120 L/day")
 
     overview_page(c, 2, total, series_label, "UTC",
                   "The UTC Series prioritises absolute precision dehumidification with a near-silent profile. At only 200 mm thick (UTC20), it disappears into any false ceiling and is ideal as a humidity supplement when fresh-air ventilation is already handled separately. UV-C sterilisation, scheduled timers, WiFi App, and RS485 Modbus BMS are standard.",
@@ -564,56 +591,76 @@ def gen_utc():
 
     specs_page(c, 3, total, series_label, "UTC",
                models=[
-                   {"name": "UTC20", "tag": "ENERGY GRADE 1", "specs": {
-                       "capacity": "20 L/day",
-                       "coverage": "200–400 sq ft",
-                       "airflow": "220 CMH",
-                       "noise": "39 dB(A)",
-                       "thickness": "200 mm",
-                       "dim": "865 × 376 × 200",
-                       "weight": "28 kg",
-                       "power": "230V / 50Hz",
+                   {"name": "DBA-UTC20", "tag": "HK GRADE 1", "specs": {
+                       "cap_30": "20 L/day", "cap_27": "9.9 L/day",
+                       "airflow": "220 CMH", "coverage": "200–400 sq ft",
+                       "noise": "39 dB(A)", "static": "80 Pa",
+                       "power": "196 / 300 W", "thickness": "200 mm",
+                       "dim": "865 × 376 × 200 mm", "weight": "28 kg",
+                       "supply": "220-240V / 50Hz", "drain": "1.8 m",
+                       "ports": "Ø146 mm", "refrig": "R134a / 230 g",
+                       "uvc": "UV-C lamp", "comm": "WiFi + RS485",
                    }},
-                   {"name": "UTC68", "specs": {
-                       "capacity": "68 L/day",
-                       "coverage": "800–1000 sq ft",
-                       "airflow": "500 CMH",
-                       "noise": "48 dB(A)",
-                       "thickness": "240 mm",
-                       "dim": "1010 × 500 × 240",
-                       "weight": "42 kg",
-                       "power": "230V / 50Hz",
+                   {"name": "DBA-UTC68", "specs": {
+                       "cap_30": "68 L/day", "cap_27": "42 L/day",
+                       "airflow": "500 CMH", "coverage": "800–1,000 sq ft",
+                       "noise": "48 dB(A)", "static": "100 Pa",
+                       "power": "880 / 1,250 W", "thickness": "240 mm",
+                       "dim": "1,010 × 500 × 240 mm", "weight": "42 kg",
+                       "supply": "220-240V / 50Hz", "drain": "1.8 m",
+                       "ports": "Ø146 mm", "refrig": "R410A / 600 g",
+                       "uvc": "UV-C lamp", "comm": "WiFi + RS485",
                    }},
-                   {"name": "UTC120", "specs": {
-                       "capacity": "120 L/day",
-                       "coverage": "1300–1500 sq ft",
-                       "airflow": "890 CMH",
-                       "noise": "50 dB(A)",
-                       "thickness": "310 mm",
-                       "dim": "1075 × 746 × 310",
-                       "weight": "64 kg",
-                       "power": "230V / 50Hz",
+                   {"name": "DBA-UTC120", "specs": {
+                       "cap_30": "120 L/day", "cap_27": "53 L/day",
+                       "airflow": "890 CMH", "coverage": "1,300–1,500 sq ft",
+                       "noise": "50 dB(A)", "static": "100 Pa",
+                       "power": "1,010 / 1,600 W", "thickness": "310 mm",
+                       "dim": "1,075 × 746 × 310 mm", "weight": "64 kg",
+                       "supply": "220-240V / 50Hz", "drain": "1.8 m",
+                       "ports": "Ø196 mm", "refrig": "R410A / 900 g",
+                       "uvc": "UV-C lamp", "comm": "WiFi + RS485",
                    }},
                ],
                columns=[
-                   ("capacity",   "Dehumidification",  "抽濕量"),
-                   ("coverage",   "Coverage",          "適用面積"),
-                   ("airflow",    "Airflow",           "風量"),
-                   ("noise",      "Noise",             "噪音"),
-                   ("thickness",  "Profile thickness", "厚度"),
-                   ("dim",        "Dimensions (mm)",   "尺寸"),
-                   ("weight",     "Weight",            "重量"),
-                   ("power",      "Power supply",      "電源"),
+                   ("cap_30",   "Capacity (30°C 80%)",   "抽濕量 (30°C 80%)"),
+                   ("cap_27",   "Capacity (26.7°C 60%)", "抽濕量 (26.7°C 60%)"),
+                   ("airflow",  "Airflow",               "風量"),
+                   ("coverage", "Coverage",              "適用面積"),
+                   ("noise",    "Noise (3 m)",           "噪音 (3 米)"),
+                   ("static",   "Static pressure",       "靜壓"),
+                   ("power",    "Rated / Max power",     "額定 / 最大功率"),
+                   ("thickness","Profile thickness",     "厚度"),
+                   ("dim",      "Dimensions (L×W×H)",    "尺寸"),
+                   ("weight",   "Weight",                "重量"),
+                   ("supply",   "Power supply",          "電源"),
+                   ("drain",    "Drain pump head",       "水泵揚程"),
+                   ("ports",    "Air outlet / inlet",    "出 / 入風口"),
+                   ("refrig",   "Refrigerant",           "冷媒"),
+                   ("uvc",      "Sterilisation",         "殺菌"),
+                   ("comm",     "Connectivity",          "通訊"),
                ])
 
-    picker_page(c, 4, total, series_label, "UTC",
-                picker_rows=[
-                    ("Bedroom",            "200–300 sq ft",   "UTC20",  "Quiet, slim"),
-                    ("Studio / 1-bed",     "200–400 sq ft",   "UTC20",  "HK Grade 1"),
-                    ("2–3 bed flat",       "600–1,000 sq ft", "UTC68",  "Pump drainage"),
-                    ("Duplex / large",     "1,000+ sq ft",    "UTC120", "Multi-zone"),
-                    ("Wine storage room",  "any",             "UTC20",  "Stable RH"),
-                    ("Office / clubhouse", "1,000+ sq ft",    "UTC120", "BMS-ready"),
+    config_page(c, 4, total, series_label, "UTC",
+                config_items=[
+                    ("Drain pump (1.8 m head)",         "排水泵 1.8 m 揚程"),
+                    ("UV-C sterilisation lamp",         "UV-C 紫外線殺菌燈"),
+                    ("Stainless steel mesh filter",     "不銹鋼網目濾網"),
+                    ("Emergency stop button",           "緊急停機按鈕"),
+                    ("5 m humidity sensor cable",       "5 m 濕度感應線"),
+                    ("IR remote included",              "遙控器標配"),
+                    ("Slim 200–310 mm profile",         "200–310 mm 超薄機身"),
+                    ("Concealed false-ceiling mount",   "天花式隱藏安裝"),
+                ],
+                control_items=[
+                    ("RH setpoint range 20–95%",        "濕度設定範圍 20–95%"),
+                    ("Low / high fan speed",            "低 / 高風速"),
+                    ("WiFi App control",                "WiFi App 智能控制"),
+                    ("RS485 Modbus BMS",                "RS485 Modbus 樓宇管理接口"),
+                    ("Scheduled on/off timer",          "定時開關機"),
+                    ("Power-off memory",                "斷電記憶"),
+                    ("HK Grade 1 Energy Label (UTC20)", "香港一級能源標籤 (UTC20)"),
+                    ("Quiet from 39 dB(A)",             "39 dB(A) 起低噪音運作"),
                 ])
 
     c.save()
@@ -636,7 +683,7 @@ def gen_gec_commercial():
           "商用天花式抽濕機",
           "High static pressure ducted ceiling dehumidifiers built for large floors and multi-room distribution. RS485 BMS standard, 68 to 550 L/day capacity. Engineered for offices, retail, hotel ballrooms, indoor pools, and large clubhouses.",
           "為大空間設計的高靜壓商用天花機 — 商廈辦公室、零售商舖、酒店宴會廳、室內泳池、大型會所。RS485 BMS 標配，68 至 550 公升 / 日抽濕量任選，多區管道分送。",
-          ["GEC68LD-HP", "GEC145LD-HP", "GEC280LD", "GEC400LD", "GEC550LD"], "68–550 L/day")
+          ["DBA-GEC68LD-HP", "DBA-GEC145LD-HP", "DBA-GEC280LD", "DBA-GEC400LD", "DBA-GEC550LD"], "68–550 L/day")
 
     overview_page(c, 2, total, series_label, "GEC",
                   "The GEC commercial ceiling series handles large floor plates and ducted multi-zone distribution that smaller residential units cannot serve. High static pressure (up to 80 Pa) drives air through long duct runs, while the stainless evaporator and pump drainage suit demanding industrial and commercial environments. Five capacity points cover everything from a 1,000 sq ft retail unit to a 5,000 sq ft hotel ballroom.",
@@ -663,64 +710,74 @@ def gen_gec_commercial():
 
     specs_page(c, 3, total, series_label, "GEC",
                models=[
-                   {"name": "GEC68LD-HP", "specs": {
-                       "capacity": "68 L/day",
-                       "coverage": "800–1,000 sq ft",
-                       "airflow": "500 CMH",
-                       "static": "30 Pa",
-                       "dim": "970 × 525 × 345",
-                       "phase": "1ph 230V",
+                   {"name": "DBA-GEC68LD-HP", "specs": {
+                       "capacity": "68 L/day", "coverage": "800–1,000 sq ft",
+                       "airflow": "500 CMH", "noise": "49 dB(A)",
+                       "dim": "970 × 525 × 345 mm", "weight": "—",
+                       "supply": "220-240V / 50Hz", "uvc": "UV-C lamp",
+                       "comm": "RS485 Modbus",
                    }},
-                   {"name": "GEC145LD-HP", "specs": {
-                       "capacity": "145 L/day",
-                       "coverage": "1,500–1,700 sq ft",
-                       "airflow": "1,200 CMH",
-                       "static": "50 Pa",
-                       "dim": "1,005 × 695 × 440",
-                       "phase": "1ph 230V",
+                   {"name": "DBA-GEC145LD-HP", "specs": {
+                       "capacity": "145 L/day", "coverage": "1,500–1,700 sq ft",
+                       "airflow": "1,200 CMH", "noise": "50 dB(A)",
+                       "dim": "1,005 × 695 × 440 mm", "weight": "70 kg",
+                       "supply": "220-240V / 50Hz", "uvc": "UV-C lamp",
+                       "comm": "RS485 Modbus",
                    }},
-                   {"name": "GEC280LD", "specs": {
-                       "capacity": "280 L/day",
-                       "coverage": "2,500–3,000 sq ft",
-                       "airflow": "1,700 CMH",
-                       "static": "60 Pa",
-                       "dim": "1,137 × 900 × 540",
-                       "phase": "3ph 380V",
+                   {"name": "DBA-GEC280LD", "specs": {
+                       "capacity": "280 L/day", "coverage": "2,500–3,000 sq ft",
+                       "airflow": "1,700 CMH", "noise": "58 dB(A)",
+                       "dim": "1,137 × 900 × 540 mm", "weight": "108 kg",
+                       "supply": "380V 3N / 50Hz", "uvc": "—",
+                       "comm": "RS485 Modbus",
                    }},
-                   {"name": "GEC400LD", "specs": {
-                       "capacity": "400 L/day",
-                       "coverage": "3,000–4,000 sq ft",
-                       "airflow": "3,250 CMH",
-                       "static": "80 Pa",
-                       "dim": "1,270 × 1,200 × 605",
-                       "phase": "3ph 380V",
+                   {"name": "DBA-GEC400LD", "specs": {
+                       "capacity": "400 L/day", "coverage": "3,000–4,000 sq ft",
+                       "airflow": "3,250 CMH", "noise": "65 dB(A)",
+                       "dim": "1,270 × 1,200 × 605 mm", "weight": "210 kg",
+                       "supply": "380V 3N / 50Hz", "uvc": "—",
+                       "comm": "RS485 Modbus",
                    }},
-                   {"name": "GEC550LD", "specs": {
-                       "capacity": "550 L/day",
-                       "coverage": "4,000–5,000 sq ft",
-                       "airflow": "3,250 CMH",
-                       "static": "80 Pa",
-                       "dim": "1,270 × 1,200 × 605",
-                       "phase": "3ph 380V",
+                   {"name": "DBA-GEC550LD", "specs": {
+                       "capacity": "550 L/day", "coverage": "4,000–5,000 sq ft",
+                       "airflow": "3,250 CMH", "noise": "65 dB(A)",
+                       "dim": "1,270 × 1,200 × 605 mm", "weight": "240 kg",
+                       "supply": "380V 3N / 50Hz", "uvc": "—",
+                       "comm": "RS485 Modbus",
                    }},
                ],
                columns=[
-                   ("capacity",  "Dehumidification",  "抽濕量"),
-                   ("coverage",  "Coverage",          "適用面積"),
-                   ("airflow",   "Airflow",           "風量"),
-                   ("static",    "External static",   "外靜壓"),
-                   ("dim",       "Dimensions (mm)",   "尺寸"),
-                   ("phase",     "Power supply",      "電源"),
+                   ("capacity", "Capacity (30°C 80%)", "抽濕量 (30°C 80%)"),
+                   ("coverage", "Coverage",            "適用面積"),
+                   ("airflow",  "Airflow",             "風量"),
+                   ("noise",    "Noise level",         "噪音"),
+                   ("dim",      "Dimensions (L×W×H)",  "尺寸"),
+                   ("weight",   "Weight",              "重量"),
+                   ("supply",   "Power supply",        "電源"),
+                   ("uvc",      "Sterilisation",       "殺菌"),
+                   ("comm",     "Connectivity",        "通訊"),
                ])
 
-    picker_page(c, 4, total, series_label, "GEC",
-                picker_rows=[
-                    ("Small office / retail",  "800–1,000 sq ft",   "GEC68LD-HP",  "Single zone"),
-                    ("Open-plan office",       "1,500–1,700 sq ft", "GEC145LD-HP", "BMS-ready"),
-                    ("Showroom / hall",        "2,500–3,000 sq ft", "GEC280LD",    "3-phase"),
-                    ("Banquet / clubhouse",    "3,000–4,000 sq ft", "GEC400LD",    "High static"),
-                    ("Indoor pool / hangar",   "4,000–5,000 sq ft", "GEC550LD",    "Maximum"),
-                    ("Multi-zone hotel floor", "Custom",            "GEC400LD x N","Per-zone duct"),
+    config_page(c, 4, total, series_label, "GEC",
+                config_items=[
+                    ("High static pressure for ducting",     "高靜壓管道送風"),
+                    ("Stainless steel evaporator & tank",    "不銹鋼蒸發器與水盤"),
+                    ("Pump drainage (10 m head)",            "排水泵 10 m 揚程"),
+                    ("DC inverter compressor (HP series)",   "直流變頻壓縮機 (HP 機型)"),
+                    ("UV-C sterilisation (68LD/145LD)",      "UV-C 殺菌燈 (68LD/145LD)"),
+                    ("EC fan motor — low noise",             "EC 低噪音風扇電機"),
+                    ("Three-phase 380V (280LD/400LD/550LD)", "三相電源 (280LD 起)"),
+                    ("Concealed false-ceiling mount",        "天花式隱藏安裝"),
+                ],
+                control_items=[
+                    ("RH setpoint range 20–95%",          "濕度設定範圍 20–95%"),
+                    ("Centralised setpoints via BMS",     "BMS 集中控制設定"),
+                    ("RS485 Modbus interface",            "RS485 Modbus 樓宇管理接口"),
+                    ("Fault relay + alarm output",        "故障繼電器 + 警報輸出"),
+                    ("Schedule on/off + power-off memory","定時開關機 + 斷電記憶"),
+                    ("Dry-contact remote enable",         "乾接點遠程啟動"),
+                    ("Real-time runtime telemetry",       "實時運行狀態遙測"),
+                    ("Multi-zone duct distribution",      "多區管道分送"),
                 ])
 
     c.save()
