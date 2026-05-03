@@ -12,6 +12,6 @@
     "hotline": "+85225411611",
     "email": "info@erv.hk"
   },
-  "series": ["GEC V (fresh-air ceiling)", "THC (climate control)", "UTC (ultra-thin ceiling)", "GEC LD (commercial ceiling)"],
+  "series": ["GEC V (fresh-air ceiling)", "THC (climate control)", "UTC (ultra-thin ceiling)", "GEC (commercial ceiling)"],
   "notes": "THC and GEC V (30V/50V/80V) specifications used here are nominal estimates consistent with the DBA family scaling — confirm with manufacturer datasheets before publishing."
 }
