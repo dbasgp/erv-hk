@@ -216,7 +216,8 @@ def cover(c, series_code, title_en, title_zh, lead_en, lead_zh,
     zh_y = lead_y - len(en_lines) * 16 - 24
     c.setFont(CJK, 11)
     c.setFillColor(MUTED)
-    for i, line in enumerate(_wrap_cjk(lead_zh, 36)):
+    lead_max_w = W - 2 * MARGIN
+    for i, line in enumerate(wrap_smart(c, lead_zh, lead_max_w, CJK, 11)):
         c.drawString(MARGIN, zh_y - i * 18, line)
 
     # Cover footer (subtle)
@@ -264,7 +265,7 @@ def overview_page(c, page_num, total, series_label, series_code,
         ty -= 14
     ty -= 10
     c.setFont(CJK, 10)
-    for line in _wrap_cjk(description_zh, 26):
+    for line in wrap_smart(c, description_zh, text_w, CJK, 10):
         c.drawString(text_x, ty, line)
         ty -= 16
 
@@ -520,7 +521,65 @@ def _wrap(text, width):
     return lines
 
 def _wrap_cjk(text, width):
+    """Legacy char-count wrapper kept for callers that still use it."""
     return [text[i:i + width] for i in range(0, len(text), width)]
+
+
+def _is_cjk(ch):
+    """Return True for any Chinese / Japanese / Korean / fullwidth glyph."""
+    if not ch:
+        return False
+    cp = ord(ch)
+    return (
+        0x3000 <= cp <= 0x303F   # CJK symbols & punctuation
+        or 0x3400 <= cp <= 0x4DBF
+        or 0x4E00 <= cp <= 0x9FFF
+        or 0xF900 <= cp <= 0xFAFF
+        or 0xFE30 <= cp <= 0xFE4F
+        or 0xFF00 <= cp <= 0xFFEF  # halfwidth/fullwidth forms
+    )
+
+
+def _tokenize_mixed(text):
+    """Yield (kind, str) tokens. CJK chars individually; Latin runs atomic."""
+    out, i, n = [], 0, len(text)
+    while i < n:
+        ch = text[i]
+        if ch.isspace():
+            j = i
+            while j < n and text[j].isspace():
+                j += 1
+            out.append(('space', text[i:j]))
+            i = j
+        elif _is_cjk(ch):
+            out.append(('cjk', ch))
+            i += 1
+        else:
+            j = i
+            while j < n and not _is_cjk(text[j]) and not text[j].isspace():
+                j += 1
+            out.append(('latin', text[i:j]))
+            i = j
+    return out
+
+
+def wrap_smart(c, text, max_w, font, size):
+    """Width-aware wrapper. Latin tokens stay atomic; CJK breaks per char."""
+    tokens = _tokenize_mixed(text)
+    lines, cur = [], ""
+    for kind, t in tokens:
+        # Drop a leading space at the start of a fresh line
+        candidate = cur + t if (cur or kind != 'space') else cur
+        if c.stringWidth(candidate, font, size) <= max_w:
+            cur = candidate
+            continue
+        # Doesn't fit — flush the current line, start a new one with this token
+        if cur.strip():
+            lines.append(cur.rstrip())
+        cur = "" if kind == 'space' else t
+    if cur.strip():
+        lines.append(cur.rstrip())
+    return lines
 
 # ========== GEC V CATALOG ==========
 
