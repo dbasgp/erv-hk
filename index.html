@@ -1164,41 +1164,80 @@
   <!-- QUOTE FORM -->
   <section class="quote" id="quote">
     <div class="container">
-      <div class="quote-grid">
-        <div class="quote-text reveal">
-          <p class="eyebrow">
-            <span lang-zh>免費場地評估</span><span lang-en>Free site assessment</span>
-          </p>
-          <h2>
-            <span lang-zh>留下您的場地<br />我們為您度身配置。</span>
-            <span lang-en>Tell us about your space.<br />We'll size it precisely.</span>
-          </h2>
-          <p class="lead">
-            <span lang-zh>提交資料後，香港工程顧問將於一個工作天內回覆，提供建議型號、估價、安裝時間及上門勘察安排。</span>
-            <span lang-en>Submit your details and a Hong Kong engineer will reply within one business day with recommended models, pricing, lead time, and a site survey appointment.</span>
-          </p>
-          <div class="quote-meta">
-            <a href="https://wa.me/85284043880" target="_blank" rel="noopener" class="meta-link">↗ WhatsApp · +852 8404 3880</a>
-            <a href="tel:+85221210968" class="meta-link">↗ Hotline · +852 2121 0968</a>
-            <a href="mailto:erv@erv.hk" class="meta-link">↗ Email · erv@erv.hk</a>
-            <a href="https://www.dba.hk" target="_blank" rel="noopener" class="meta-link">↗ <span lang-zh>瀏覽完整 DBA 產品 → dba.hk</span><span lang-en>Full DBA range → dba.hk</span></a>
+      <div class="quote-head reveal">
+        <p class="eyebrow">
+          <span lang-zh>免費場地評估</span><span lang-en>Free site assessment</span>
+        </p>
+        <h2>
+          <span lang-zh>三步完成 · 24 小時內回覆</span>
+          <span lang-en>Three steps. Reply within 24 hours.</span>
+        </h2>
+      </div>
+
+      <ol class="quote-steps reveal">
+        <li>
+          <span class="qs-num">01</span>
+          <div>
+            <h4><span lang-zh>提交場地資料</span><span lang-en>Submit details</span></h4>
+            <p><span lang-zh>填寫面積、應用、目標濕度</span><span lang-en>Floor area, application, target RH</span></p>
           </div>
+        </li>
+        <li>
+          <span class="qs-num">02</span>
+          <div>
+            <h4><span lang-zh>工程顧問回覆</span><span lang-en>Engineer replies</span></h4>
+            <p><span lang-zh>建議型號、估價、安裝時間</span><span lang-en>Models, pricing, lead time</span></p>
+          </div>
+        </li>
+        <li>
+          <span class="qs-num">03</span>
+          <div>
+            <h4><span lang-zh>上門勘察報價</span><span lang-en>Site survey & quote</span></h4>
+            <p><span lang-zh>確認設計，落單安裝</span><span lang-en>Confirm design, schedule install</span></p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="quote-channels reveal">
+        <a href="https://wa.me/85284043880" target="_blank" rel="noopener" class="qch">
+          <span class="qch-label">WhatsApp</span>
+          <span class="qch-value">+852 8404 3880</span>
+        </a>
+        <a href="tel:+85221210968" class="qch">
+          <span class="qch-label"><span lang-zh>熱線</span><span lang-en>Hotline</span></span>
+          <span class="qch-value">+852 2121 0968</span>
+        </a>
+        <a href="mailto:erv@erv.hk" class="qch">
+          <span class="qch-label"><span lang-zh>電郵</span><span lang-en>Email</span></span>
+          <span class="qch-value">erv@erv.hk</span>
+        </a>
+        <a href="https://www.dba.hk" target="_blank" rel="noopener" class="qch">
+          <span class="qch-label"><span lang-zh>完整型號</span><span lang-en>Full range</span></span>
+          <span class="qch-value">dba.hk ↗</span>
+        </a>
+      </div>
+
+      <form class="quote-form reveal" id="quoteForm" action="https://api.web3forms.com/submit" method="POST">
+        <p class="quote-form-title">
+          <span lang-zh>或直接提交查詢表格</span><span lang-en>Or submit the form below</span>
+        </p>
+        <input type="hidden" name="access_key" value="9ea89c72-aefd-4762-8d2d-48e3f68530d3" />
+        <input type="hidden" name="subject" value="New quote request from erv.hk" />
+        <input type="hidden" name="from_name" value="ERV.hk quote form" />
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
+        <div class="form-row">
+          <label><span lang-zh>姓名</span><span lang-en>Name</span><input type="text" name="name" required /></label>
+          <label><span lang-zh>電話</span><span lang-en>Phone</span><input type="tel" name="phone" required /></label>
         </div>
-        <form class="quote-form reveal" id="quoteForm" action="https://api.web3forms.com/submit" method="POST">
-          <input type="hidden" name="access_key" value="9ea89c72-aefd-4762-8d2d-48e3f68530d3" />
-          <input type="hidden" name="subject" value="New quote request from erv.hk" />
-          <input type="hidden" name="from_name" value="ERV.hk quote form" />
-          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
-          <div class="form-row">
-            <label><span lang-zh>姓名</span><span lang-en>Name</span><input type="text" name="name" required /></label>
-            <label><span lang-zh>電話</span><span lang-en>Phone</span><input type="tel" name="phone" required /></label>
-          </div>
+        <div class="form-row">
           <label><span lang-zh>電郵</span><span lang-en>Email</span><input type="email" name="email" required /></label>
           <label><span lang-zh>公司 / 項目 (選填)</span><span lang-en>Company / project (optional)</span><input type="text" name="company" /></label>
+        </div>
+        <div class="form-row">
           <label>
             <span lang-zh>應用範疇</span><span lang-en>Application</span>
             <select name="application">
-              <option value=""><span lang-zh>請選擇…</span>Choose one…</option>
+              <option value="" data-zh="請選擇…" data-en="Choose one…">請選擇…</option>
               <option>住宅 · Residential</option>
               <option>會所 / 健身室 · Clubhouse / Gym</option>
               <option>酒店 / 服務式公寓 · Hotel / Serviced apartment</option>
@@ -1211,17 +1250,19 @@
           <label>
             <span lang-zh>面積</span><span lang-en>Floor area</span>
             <select name="size">
-              <option value=""><span lang-zh>請選擇…</span>Choose one…</option>
+              <option value="" data-zh="請選擇…" data-en="Choose one…">請選擇…</option>
               <option>&lt; 500 sq ft</option>
               <option>500 – 1,000 sq ft</option>
               <option>1,000 – 1,500 sq ft</option>
               <option>1,500 – 3,000 sq ft</option>
               <option>3,000+ sq ft</option>
-              <option>不確定 / Not sure — please advise</option>
+              <option data-zh="不確定 — 請建議" data-en="Not sure — please advise">不確定 — 請建議</option>
             </select>
           </label>
-          <label><span lang-zh>有興趣型號 (選填)</span><span lang-en>Models of interest (optional)</span><input type="text" name="models" placeholder="DBA-GEC50V, GEC110V, THC50…" /></label>
-          <label><span lang-zh>需求簡述</span><span lang-en>Brief</span><textarea name="brief" rows="4" placeholder="樓底高度、現有冷氣、目標濕度、安裝時段… / ceiling height, existing AC, target RH, install window…"></textarea></label>
+        </div>
+        <label><span lang-zh>有興趣型號 (選填)</span><span lang-en>Models of interest (optional)</span><input type="text" name="models" placeholder="DBA-GEC50V, GEC110V, THC50…" /></label>
+        <label><span lang-zh>需求簡述</span><span lang-en>Brief</span><textarea name="brief" rows="4" data-zh-placeholder="樓底高度、現有冷氣、目標濕度、安裝時段…" data-en-placeholder="Ceiling height, existing AC, target RH, install window…" placeholder="樓底高度、現有冷氣、目標濕度、安裝時段…"></textarea></label>
+        <div class="form-foot">
           <button type="submit" class="btn-pill primary">
             <span lang-zh>提交查詢</span><span lang-en>Request quote</span>
           </button>
@@ -1229,8 +1270,8 @@
             <span lang-zh>一個工作天內回覆。資料保密。</span>
             <span lang-en>We'll reply within one business day. No spam, ever.</span>
           </p>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </section>
 

@@ -18,6 +18,19 @@ document.querySelectorAll('.lang-switch button').forEach((btn) => {
   btn.addEventListener('click', () => applyLang(btn.dataset.lang));
 });
 
+// Swap select-option text + textarea placeholders when language changes
+function applyFormLang() {
+  const lang = html.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
+  document.querySelectorAll('option[data-zh][data-en]').forEach((o) => {
+    o.textContent = o.dataset[lang];
+  });
+  document.querySelectorAll('[data-zh-placeholder][data-en-placeholder]').forEach((el) => {
+    el.placeholder = lang === 'en' ? el.dataset.enPlaceholder : el.dataset.zhPlaceholder;
+  });
+}
+applyFormLang();
+new MutationObserver(applyFormLang).observe(html, { attributes: true, attributeFilter: ['data-lang'] });
+
 // ========== Mobile nav ==========
 function toggleNav() {
   document.getElementById('mobileNav').classList.toggle('open');
