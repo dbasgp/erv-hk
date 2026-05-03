@@ -237,7 +237,7 @@ def cover(c, series_code, title_en, title_zh, lead_en, lead_zh,
 
 def overview_page(c, page_num, total, series_label, series_code,
                   description_en, description_zh, features, applications,
-                  hero_image=None):
+                  hero_image=None, feature_image=None, feature_caption=None):
     fill_bg(c, BG)
     page_chrome(c, page_num, total, series_label)
 
@@ -269,14 +269,34 @@ def overview_page(c, page_num, total, series_label, series_code,
         c.drawString(text_x, ty, line)
         ty -= 16
 
-    # Hero image right column
-    if hero_image:
+    # Right column: hero product image (always) plus an optional feature
+    # close-up below it (e.g. the LCD touch panel for GEC V).
+    if hero_image and feature_image:
+        hero_h = 150
+        feat_h = 130
+        draw_image_fit(c, str(IMG_DIR / hero_image),
+                       img_x, y - hero_h + 10, img_w, hero_h,
+                       bg=white, border=None)
+        feat_y = y - hero_h + 10 - feat_h - 6
+        draw_image_fit(c, str(IMG_DIR / feature_image),
+                       img_x, feat_y, img_w, feat_h,
+                       bg=white, border=None)
+        if feature_caption:
+            c.setFont(LATIN_B, 8.5)
+            c.setFillColor(MUTED)
+            c.drawCentredString(img_x + img_w / 2, feat_y - 10,
+                                feature_caption.upper())
+        bottom = feat_y - (16 if feature_caption else 6)
+    elif hero_image:
         img_h = 240
         draw_image_fit(c, str(IMG_DIR / hero_image),
                        img_x, y - img_h + 10, img_w, img_h,
                        bg=white, border=None)
+        bottom = y - img_h + 4
+    else:
+        bottom = y
 
-    y = min(ty, y - 240) - 24
+    y = min(ty, bottom) - 24
 
     # Two-column cards (Features / Applications)
     col_w = (W - 2 * MARGIN - 24) / 2
@@ -622,7 +642,9 @@ def gen_gec_v():
                       "Premium residences in Mid-Levels",
                       "Concealed false-ceiling installation",
                   ],
-                  hero_image="ceiling-dba-gec110v.jpg")
+                  hero_image="ceiling-dba-gec110v.jpg",
+                  feature_image="panel-dba-gecv.jpg",
+                  feature_caption="86×86 mm LCD touch panel · 5-in-1 air detector")
 
     specs_page(c, 3, total, series_label, "GEC V",
                models=[
