@@ -56,20 +56,44 @@ const onParallaxScroll = () => {
 window.addEventListener('scroll', onParallaxScroll, { passive: true });
 onParallaxScroll();
 
-// ========== Sticky tech-stage image switching ==========
-const techSteps = document.querySelectorAll('.tech-step');
-const techImgs = document.querySelectorAll('.tech-img');
-if (techSteps.length && techImgs.length) {
-  const techObs = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        const idx = e.target.getAttribute('data-step');
-        techImgs.forEach((img) => img.classList.toggle('active', img.getAttribute('data-tech') === idx));
-      }
-    });
-  }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
-  techSteps.forEach((s) => techObs.observe(s));
-}
+// ========== Collapse product series past the third card ==========
+const SERIES_VISIBLE = 3;
+document.querySelectorAll('.series-block').forEach((block) => {
+  const grid = block.querySelector('.series-grid');
+  if (!grid) return;
+  const cards = grid.querySelectorAll(':scope > .spec-card');
+  if (cards.length <= SERIES_VISIBLE) return;
+
+  cards.forEach((card, i) => { if (i >= SERIES_VISIBLE) card.classList.add('is-collapsed'); });
+
+  const hidden = cards.length - SERIES_VISIBLE;
+  const wrap = document.createElement('div');
+  wrap.className = 'series-toggle-wrap';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'series-toggle';
+  const labelMore = {
+    zh: `查看更多 (+${hidden})`,
+    en: `Show ${hidden} more`,
+  };
+  const labelLess = { zh: '收起', en: 'Show less' };
+  const setLabel = () => {
+    const lang = html.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
+    const expanded = block.classList.contains('is-expanded');
+    btn.innerHTML = `<span>${expanded ? labelLess[lang] : labelMore[lang]}</span><span class="chev">▾</span>`;
+  };
+  btn.addEventListener('click', () => {
+    block.classList.toggle('is-expanded');
+    setLabel();
+  });
+  wrap.appendChild(btn);
+  grid.insertAdjacentElement('afterend', wrap);
+  setLabel();
+
+  // Re-render label when language toggles
+  const langObs = new MutationObserver(setLabel);
+  langObs.observe(html, { attributes: true, attributeFilter: ['data-lang'] });
+});
 
 // ========== Quote form ==========
 const quoteForm = document.getElementById('quoteForm');
