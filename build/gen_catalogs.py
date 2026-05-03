@@ -224,7 +224,7 @@ def cover(c, series_code, title_en, title_zh, lead_en, lead_zh,
     c.setFillColor(PANEL)
     c.rect(0, 0, W, 90, fill=1, stroke=0)
     hline(c, 0, 90, W, color=LINE, w=0.5)
-    draw_text(c, MARGIN, cf_y + 12, "Manufactured for ERV.hk by HK Environmental Electrical Appliance Limited",
+    draw_text(c, MARGIN, cf_y + 12, "ERV.HK 2026. Environmental Electrical Appliance Limited",
               font=LATIN, size=9, color=MUTED)
     draw_text(c, MARGIN, cf_y - 6, "www.erv.hk",
               font=LATIN_B, size=12, color=BLUE)
