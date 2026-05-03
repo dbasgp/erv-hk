@@ -1,34 +1,43 @@
 #!/usr/bin/env python3
-"""Generate ERV.hk product catalogs (GEC V + UTC) as branded PDFs.
+"""Generate ERV.hk product catalogs (GEC, GEC V, UTC) as branded PDFs.
 
-Output: clients/erv-hk/catalogs/erv-gec-v-fresh-air-ceiling.pdf
+Output: clients/erv-hk/catalogs/erv-gec-commercial-ceiling.pdf
+        clients/erv-hk/catalogs/erv-gec-v-fresh-air-ceiling.pdf
         clients/erv-hk/catalogs/erv-utc-ultra-thin-ceiling.pdf
 
-Style: navy bg, orange accent, white text, English + Traditional Chinese.
-No DBA contact info — ERV.hk channels only.
+Style: light/white background, ERV blue brand mark, warm orange accent,
+bilingual EN + Traditional Chinese, with embedded product photos.
 """
 from pathlib import Path
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.colors import HexColor, white, Color
+from reportlab.lib.colors import HexColor, white, black, Color
+from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfbase.ttfonts import TTFont
 
-OUT_DIR = Path(__file__).resolve().parent.parent / "catalogs"
+ROOT = Path(__file__).resolve().parent.parent
+OUT_DIR = ROOT / "catalogs"
+IMG_DIR = ROOT / "images"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-NAVY      = HexColor("#060a1a")
-NAVY_2    = HexColor("#0d1530")
-BLUE      = HexColor("#0023ff")
-ACCENT    = HexColor("#ff8a14")
+# ---- Light palette ----
+BG        = white
+PANEL     = HexColor("#f5f7fb")     # subtle off-white panel
+PANEL_2   = HexColor("#eceff8")     # slightly warmer panel
+INK       = HexColor("#0a0e1f")     # near-black
+INK_SOFT  = HexColor("#3a4159")
+MUTED     = HexColor("#5d6378")
+SUBTLE    = HexColor("#8a8fa0")
+LINE      = HexColor("#e4e6ee")
+LINE_SOFT = HexColor("#eef0f5")
+BLUE      = HexColor("#0023ff")     # ERV brand blue (logo)
+BLUE_DARK = HexColor("#001bb8")
+ACCENT    = HexColor("#ff8a14")     # warm accent for eyebrow tags
 ACCENT_D  = HexColor("#d96900")
-LINE      = Color(1, 1, 1, alpha=0.12)
-MUTED     = Color(1, 1, 1, alpha=0.65)
-SUBTLE    = Color(1, 1, 1, alpha=0.45)
 
-# macOS STHeiti Light has full Traditional Chinese coverage. Falls back to
-# STSong-Light (CIDFont) if the system font isn't available.
+# CJK fonts
 try:
     pdfmetrics.registerFont(TTFont("STHeiti", "/System/Library/Fonts/STHeiti Light.ttc", subfontIndex=0))
     pdfmetrics.registerFont(TTFont("STHeiti-Bold", "/System/Library/Fonts/STHeiti Light.ttc", subfontIndex=1))
@@ -45,22 +54,24 @@ LATIN_B = "Helvetica-Bold"
 W, H = A4  # 595 x 842 pt
 MARGIN = 40
 
-def fill_bg(c, color=NAVY):
+# ---------- helpers ----------
+
+def fill_bg(c, color=BG):
     c.setFillColor(color)
     c.rect(0, 0, W, H, fill=1, stroke=0)
 
-def draw_text(c, x, y, text, font=LATIN, size=10, color=white):
+def draw_text(c, x, y, text, font=LATIN, size=10, color=INK):
     c.setFont(font, size)
     c.setFillColor(color)
     c.drawString(x, y, text)
 
-def draw_text_right(c, x, y, text, font=LATIN, size=10, color=white):
+def draw_text_right(c, x, y, text, font=LATIN, size=10, color=INK):
     c.setFont(font, size)
     c.setFillColor(color)
     c.drawRightString(x, y, text)
 
-def draw_eyebrow(c, x, y, text, color=ACCENT):
-    c.setFont(LATIN_B, 9)
+def draw_eyebrow(c, x, y, text, color=ACCENT_D, size=9):
+    c.setFont(LATIN_B, size)
     c.setFillColor(color)
     c.drawString(x, y, text.upper())
 
@@ -69,66 +80,107 @@ def hline(c, x1, y, x2, color=LINE, w=0.5):
     c.setLineWidth(w)
     c.line(x1, y, x2, y)
 
+def draw_image_fit(c, path, x, y, w, h, bg=PANEL, border=LINE):
+    """Draw an image fitted within (x,y,w,h) on a panel; preserves aspect."""
+    if not Path(path).exists():
+        c.setFillColor(bg)
+        c.roundRect(x, y, w, h, 8, fill=1, stroke=0)
+        return
+    # Panel
+    c.setFillColor(bg)
+    c.roundRect(x, y, w, h, 8, fill=1, stroke=0)
+    c.setStrokeColor(border)
+    c.setLineWidth(0.5)
+    c.roundRect(x, y, w, h, 8, fill=0, stroke=1)
+    # Image
+    img = ImageReader(path)
+    iw, ih = img.getSize()
+    pad = 8
+    avail_w = w - 2 * pad
+    avail_h = h - 2 * pad
+    scale = min(avail_w / iw, avail_h / ih)
+    dw, dh = iw * scale, ih * scale
+    dx = x + (w - dw) / 2
+    dy = y + (h - dh) / 2
+    c.drawImage(img, dx, dy, dw, dh, mask='auto', preserveAspectRatio=True)
+
 def page_chrome(c, page_num, total, series_label):
-    """Header strip + footer on every interior page."""
-    # Header band
-    c.setFillColor(NAVY_2)
+    """Top header band + footer on every interior page."""
+    # Header (light)
+    c.setFillColor(PANEL)
     c.rect(0, H - 38, W, 38, fill=1, stroke=0)
-    draw_text(c, MARGIN, H - 24, "ERV.HK", font=LATIN_B, size=11, color=ACCENT)
+    hline(c, 0, H - 38, W, color=LINE, w=0.5)
+    draw_text(c, MARGIN, H - 24, "ERV.HK", font=LATIN_B, size=11, color=BLUE)
     draw_text(c, MARGIN + 70, H - 24, series_label, font=LATIN, size=9, color=MUTED)
     draw_text_right(c, W - MARGIN, H - 24,
                     f"{page_num} / {total}", font=LATIN, size=9, color=SUBTLE)
 
-    # Footer with ERV.hk channels
+    # Footer
     fy = 32
     hline(c, MARGIN, fy + 18, W - MARGIN)
-    draw_text(c, MARGIN, fy, "www.erv.hk", font=LATIN_B, size=9, color=white)
+    draw_text(c, MARGIN, fy, "www.erv.hk", font=LATIN_B, size=9, color=BLUE)
     draw_text(c, MARGIN + 110, fy, "WhatsApp +852 8404 3880", font=LATIN, size=9, color=MUTED)
     draw_text(c, MARGIN + 270, fy, "Hotline +852 2121 0968", font=LATIN, size=9, color=MUTED)
     draw_text_right(c, W - MARGIN, fy, "erv@erv.hk", font=LATIN, size=9, color=MUTED)
 
-def cover(c, series_code, title_en, title_zh, lead_en, lead_zh, model_list, capacity_label):
-    fill_bg(c, NAVY)
-    # Decorative blocks
+# ---------- pages ----------
+
+def cover(c, series_code, title_en, title_zh, lead_en, lead_zh,
+          model_list, capacity_label, hero_image=None):
+    fill_bg(c, BG)
+    # Side stripes (brand)
     c.setFillColor(BLUE)
     c.rect(0, 0, 6, H, fill=1, stroke=0)
     c.setFillColor(ACCENT)
-    c.rect(MARGIN, H - 90, 60, 4, fill=1, stroke=0)
+    c.rect(MARGIN, H - 92, 60, 4, fill=1, stroke=0)
 
     # Brand mark
-    draw_text(c, MARGIN, H - 70, "ERV.HK", font=LATIN_B, size=22, color=white)
+    draw_text(c, MARGIN, H - 70, "ERV.HK", font=LATIN_B, size=22, color=BLUE)
     draw_text(c, MARGIN + 90, H - 70, "Hong Kong fresh-air & humidity systems",
               font=LATIN, size=10, color=MUTED)
 
-    # Series tag
-    draw_eyebrow(c, MARGIN, H - 200, f"PRODUCT CATALOG / {series_code} SERIES", color=ACCENT)
+    # Hero product image — right column on cover, between brand and stat row
+    hero_w = 220
+    hero_h = 260
+    hero_x = W - MARGIN - hero_w
+    hero_y = H - 360  # bottom edge → image spans H-100 to H-360
+    if hero_image:
+        draw_image_fit(c, str(IMG_DIR / hero_image), hero_x, hero_y, hero_w, hero_h,
+                       bg=PANEL, border=LINE)
 
-    # Big title
-    c.setFont(LATIN_B, 38)
-    c.setFillColor(white)
-    c.drawString(MARGIN, H - 250, title_en)
-    c.setFont(CJK, 26)
-    c.drawString(MARGIN, H - 290, title_zh)
+    # Series tag
+    draw_eyebrow(c, MARGIN, H - 160, f"PRODUCT CATALOG / {series_code} SERIES", color=ACCENT_D)
+
+    # Big title — auto-fit to available width (left column, image on right)
+    title_max_w = hero_x - MARGIN - 24 if hero_image else (W - 2 * MARGIN)
+    title_size = 38
+    c.setFont(LATIN_B, title_size)
+    while c.stringWidth(title_en, LATIN_B, title_size) > title_max_w and title_size > 22:
+        title_size -= 1
+        c.setFont(LATIN_B, title_size)
+    c.setFillColor(INK)
+    c.drawString(MARGIN, H - 215, title_en)
+    c.setFont(CJK, 22)
+    c.setFillColor(INK_SOFT)
+    c.drawString(MARGIN, H - 255, title_zh)
 
     # Stat row — models list + capacity
-    stat_y = H - 380
+    stat_y = H - 410
     hline(c, MARGIN, stat_y + 50, W - MARGIN, color=LINE, w=0.8)
     models_str = "  ·  ".join(model_list)
-    cap_w = 200  # right column reserved for capacity
+    cap_w = 200
     models_x = MARGIN
     cap_x = W - MARGIN - cap_w
 
     draw_eyebrow(c, models_x, stat_y + 32, "MODELS", color=SUBTLE)
-    # Auto-fit; wrap to two lines if still too wide at 14pt.
     avail = cap_x - models_x - 20
     size = 22
     c.setFont(LATIN_B, size)
     while c.stringWidth(models_str, LATIN_B, size) > avail and size > 14:
         size -= 1
         c.setFont(LATIN_B, size)
-    c.setFillColor(white)
+    c.setFillColor(INK)
     if c.stringWidth(models_str, LATIN_B, size) > avail and len(model_list) > 3:
-        # Split into two rows; auto-fit each line independently.
         half = (len(model_list) + 1) // 2
         line1 = "  ·  ".join(model_list[:half])
         line2 = "  ·  ".join(model_list[half:])
@@ -146,172 +198,207 @@ def cover(c, series_code, title_en, title_zh, lead_en, lead_zh, model_list, capa
 
     draw_eyebrow(c, cap_x, stat_y + 32, "CAPACITY", color=SUBTLE)
     c.setFont(LATIN_B, 22)
-    c.setFillColor(white)
+    c.setFillColor(BLUE)
     c.drawString(cap_x, stat_y, capacity_label)
     hline(c, MARGIN, stat_y - 18, W - MARGIN, color=LINE, w=0.8)
 
     # Lead paragraph
-    lead_y = H - 480
+    lead_y = H - 500
     c.setFont(LATIN, 11)
     c.setFillColor(MUTED)
-    for i, line in enumerate(_wrap(lead_en, 78)):
+    en_lines = _wrap(lead_en, 78)
+    for i, line in enumerate(en_lines):
         c.drawString(MARGIN, lead_y - i * 16, line)
-    zh_y = lead_y - len(_wrap(lead_en, 78)) * 16 - 24
+    zh_y = lead_y - len(en_lines) * 16 - 24
     c.setFont(CJK, 11)
     c.setFillColor(MUTED)
     for i, line in enumerate(_wrap_cjk(lead_zh, 36)):
         c.drawString(MARGIN, zh_y - i * 18, line)
 
-    # Cover footer
+    # Cover footer (subtle)
     cf_y = 60
-    c.setFillColor(NAVY_2)
+    c.setFillColor(PANEL)
     c.rect(0, 0, W, 90, fill=1, stroke=0)
+    hline(c, 0, 90, W, color=LINE, w=0.5)
     draw_text(c, MARGIN, cf_y + 12, "Manufactured for ERV.hk by HK Environmental Electrical Appliance Limited",
               font=LATIN, size=9, color=MUTED)
     draw_text(c, MARGIN, cf_y - 6, "www.erv.hk",
-              font=LATIN_B, size=12, color=white)
+              font=LATIN_B, size=12, color=BLUE)
     draw_text_right(c, W - MARGIN, cf_y + 12, "erv@erv.hk",
-                    font=LATIN, size=9, color=ACCENT)
+                    font=LATIN, size=9, color=ACCENT_D)
     draw_text_right(c, W - MARGIN, cf_y - 6, "WhatsApp +852 8404 3880",
-                    font=LATIN_B, size=10, color=white)
+                    font=LATIN_B, size=10, color=INK)
     c.showPage()
 
 def overview_page(c, page_num, total, series_label, series_code,
-                  description_en, description_zh, features, applications):
-    fill_bg(c, NAVY)
+                  description_en, description_zh, features, applications,
+                  hero_image=None):
+    fill_bg(c, BG)
     page_chrome(c, page_num, total, series_label)
 
     y = H - 90
     draw_eyebrow(c, MARGIN, y, f"01  ABOUT THE {series_code} SERIES")
     y -= 26
     c.setFont(LATIN_B, 22)
-    c.setFillColor(white)
+    c.setFillColor(INK)
     c.drawString(MARGIN, y, "System overview")
-    y -= 32
+    y -= 30
 
-    # English description
-    c.setFont(LATIN, 11)
+    # Two-column body: text on left, image on right
+    text_w = (W - 2 * MARGIN) * 0.58
+    img_w = (W - 2 * MARGIN) * 0.38
+    img_x = W - MARGIN - img_w
+    text_x = MARGIN
+
+    # Description text (text column)
+    c.setFont(LATIN, 10.5)
     c.setFillColor(MUTED)
-    for line in _wrap(description_en, 82):
-        c.drawString(MARGIN, y, line)
-        y -= 15
-    y -= 16
-    c.setFont(CJK, 10.5)
-    for line in _wrap_cjk(description_zh, 38):
-        c.drawString(MARGIN, y, line)
-        y -= 17
-    y -= 22
+    en_chars = int(text_w / 5.5)  # rough chars-per-line
+    ty = y
+    for line in _wrap(description_en, 56):
+        c.drawString(text_x, ty, line)
+        ty -= 14
+    ty -= 10
+    c.setFont(CJK, 10)
+    for line in _wrap_cjk(description_zh, 26):
+        c.drawString(text_x, ty, line)
+        ty -= 16
 
-    # Two-column: Features | Applications
+    # Hero image right column
+    if hero_image:
+        img_h = 240
+        draw_image_fit(c, str(IMG_DIR / hero_image),
+                       img_x, y - img_h + 10, img_w, img_h,
+                       bg=PANEL, border=LINE)
+
+    y = min(ty, y - 240) - 24
+
+    # Two-column cards (Features / Applications)
     col_w = (W - 2 * MARGIN - 24) / 2
     col1_x = MARGIN
     col2_x = MARGIN + col_w + 24
 
     box_top = y
-    box_h = 240
-    # Features card
-    c.setFillColor(NAVY_2)
+    box_h = 220
+
+    # Feature card
+    c.setFillColor(PANEL)
     c.roundRect(col1_x, box_top - box_h, col_w, box_h, 10, fill=1, stroke=0)
     c.setStrokeColor(LINE)
     c.roundRect(col1_x, box_top - box_h, col_w, box_h, 10, fill=0, stroke=1)
     # Applications card
-    c.setFillColor(NAVY_2)
+    c.setFillColor(PANEL)
     c.roundRect(col2_x, box_top - box_h, col_w, box_h, 10, fill=1, stroke=0)
     c.setStrokeColor(LINE)
     c.roundRect(col2_x, box_top - box_h, col_w, box_h, 10, fill=0, stroke=1)
 
-    # Feature heading + items
-    fy = box_top - 26
+    # Features
+    fy = box_top - 24
     draw_eyebrow(c, col1_x + 18, fy, "KEY FEATURES")
     fy -= 22
     c.setFont(LATIN_B, 13)
-    c.setFillColor(white)
+    c.setFillColor(INK)
     c.drawString(col1_x + 18, fy, "What's standard")
     fy -= 22
     for f in features:
         c.setFillColor(ACCENT)
         c.circle(col1_x + 24, fy + 4, 2, fill=1, stroke=0)
-        c.setFont(LATIN, 10)
-        c.setFillColor(white)
+        c.setFont(LATIN, 9.5)
+        c.setFillColor(INK_SOFT)
         c.drawString(col1_x + 34, fy, f)
-        fy -= 17
+        fy -= 16
 
-    # Applications heading + items
-    ay = box_top - 26
+    # Applications
+    ay = box_top - 24
     draw_eyebrow(c, col2_x + 18, ay, "APPLICATIONS")
     ay -= 22
     c.setFont(LATIN_B, 13)
-    c.setFillColor(white)
+    c.setFillColor(INK)
     c.drawString(col2_x + 18, ay, "Where it works")
     ay -= 22
     for a in applications:
         c.setFillColor(ACCENT)
         c.circle(col2_x + 24, ay + 4, 2, fill=1, stroke=0)
-        c.setFont(LATIN, 10)
-        c.setFillColor(white)
+        c.setFont(LATIN, 9.5)
+        c.setFillColor(INK_SOFT)
         c.drawString(col2_x + 34, ay, a)
-        ay -= 17
+        ay -= 16
 
     c.showPage()
 
 def specs_page(c, page_num, total, series_label, series_code, models, columns):
-    fill_bg(c, NAVY)
+    fill_bg(c, BG)
     page_chrome(c, page_num, total, series_label)
 
     y = H - 90
     draw_eyebrow(c, MARGIN, y, f"02  {series_code} SERIES MODEL SPECIFICATIONS")
     y -= 26
     c.setFont(LATIN_B, 22)
-    c.setFillColor(white)
+    c.setFillColor(INK)
     c.drawString(MARGIN, y, "Specifications")
     y -= 12
     c.setFont(LATIN, 10)
     c.setFillColor(MUTED)
     c.drawString(MARGIN, y, "All measurements at 27 °C / 60% RH unless otherwise stated.")
-    y -= 28
+    y -= 22
 
-    # Table
+    # Image strip — small thumbnail per model above the table
     table_x = MARGIN
     table_w = W - 2 * MARGIN
     label_w = 130
     col_w = (table_w - label_w) / len(models)
 
-    # Header row
-    row_h = 32
-    c.setFillColor(NAVY_2)
+    img_h = 60
+    img_pad = 6
+    img_y = y - img_h
+    for i, m in enumerate(models):
+        cx = table_x + label_w + i * col_w
+        if m.get("image"):
+            draw_image_fit(c, str(IMG_DIR / m["image"]),
+                           cx + img_pad, img_y,
+                           col_w - 2 * img_pad, img_h,
+                           bg=PANEL, border=LINE_SOFT)
+    y = img_y - 12
+
+    # Header row — model names
+    row_h = 30
+    c.setFillColor(BLUE)
     c.rect(table_x, y - row_h, table_w, row_h, fill=1, stroke=0)
     c.setFont(LATIN_B, 9)
-    c.setFillColor(SUBTLE)
+    c.setFillColor(white)
     c.drawString(table_x + 12, y - 18, "PARAMETER")
     for i, m in enumerate(models):
         cx = table_x + label_w + i * col_w
-        c.setFont(LATIN_B, 11)
+        c.setFont(LATIN_B, 10.5)
         c.setFillColor(white)
-        c.drawCentredString(cx + col_w / 2, y - 18, m["name"])
+        # Auto-fit model name to column width
+        size = 10.5
+        while c.stringWidth(m["name"], LATIN_B, size) > col_w - 6 and size > 7:
+            size -= 0.5
+            c.setFont(LATIN_B, size)
+        c.drawCentredString(cx + col_w / 2, y - 16, m["name"])
         if m.get("tag"):
             c.setFont(LATIN_B, 7)
             c.setFillColor(ACCENT)
-            c.drawCentredString(cx + col_w / 2, y - 28, m["tag"])
+            c.drawCentredString(cx + col_w / 2, y - 26, m["tag"])
     y -= row_h
     hline(c, table_x, y, table_x + table_w, color=LINE, w=0.6)
 
-    # Body rows — auto-fit row height to total rows
+    # Body rows
     n_rows = len(columns)
     body_h = 22 if n_rows >= 12 else (24 if n_rows >= 10 else 26)
     label_size = 9 if n_rows >= 12 else 9.5
     val_size = 9.5 if n_rows >= 12 else 10
     for ridx, (key, label_en, label_zh) in enumerate(columns):
         if ridx % 2 == 0:
-            c.setFillColor(Color(1, 1, 1, alpha=0.025))
+            c.setFillColor(PANEL)
             c.rect(table_x, y - body_h, table_w, body_h, fill=1, stroke=0)
-        # Label
         c.setFont(LATIN_B, label_size)
-        c.setFillColor(white)
+        c.setFillColor(INK)
         c.drawString(table_x + 12, y - 13, label_en)
         c.setFont(CJK, label_size - 1)
         c.setFillColor(SUBTLE)
         c.drawString(table_x + 12, y - 13 - (label_size + 1), label_zh)
-        # Values — wrap if too wide for col
         for i, m in enumerate(models):
             cx = table_x + label_w + i * col_w
             val = m["specs"].get(key, "—")
@@ -320,22 +407,22 @@ def specs_page(c, page_num, total, series_label, series_code, models, columns):
             while c.stringWidth(val, LATIN, size) > col_w - 8 and size > 7:
                 size -= 0.5
                 c.setFont(LATIN, size)
-            c.setFillColor(white)
+            c.setFillColor(INK_SOFT)
             c.drawCentredString(cx + col_w / 2, y - body_h / 2 - 3, val)
         y -= body_h
-        hline(c, table_x, y, table_x + table_w, color=LINE, w=0.4)
+        hline(c, table_x, y, table_x + table_w, color=LINE_SOFT, w=0.4)
     c.showPage()
 
-def config_page(c, page_num, total, series_label, series_code, config_items, control_items):
-    """Page 4: Configuration & Smart Control bullet lists in two columns."""
-    fill_bg(c, NAVY)
+def config_page(c, page_num, total, series_label, series_code,
+                config_items, control_items):
+    fill_bg(c, BG)
     page_chrome(c, page_num, total, series_label)
 
     y = H - 90
     draw_eyebrow(c, MARGIN, y, f"03  {series_code} CONFIGURATION & CONTROL")
     y -= 26
     c.setFont(LATIN_B, 22)
-    c.setFillColor(white)
+    c.setFillColor(INK)
     c.drawString(MARGIN, y, "Configuration & control")
     y -= 12
     c.setFont(LATIN, 10)
@@ -346,7 +433,6 @@ def config_page(c, page_num, total, series_label, series_code, config_items, con
     c.drawString(MARGIN + c.stringWidth(en_text, LATIN, 10), y, "標配項目與控制功能")
     y -= 38
 
-    # Two-column cards
     col_w = (W - 2 * MARGIN - 24) / 2
     col1_x = MARGIN
     col2_x = MARGIN + col_w + 24
@@ -356,37 +442,33 @@ def config_page(c, page_num, total, series_label, series_code, config_items, con
         (col1_x, "CONFIGURATION", config_items),
         (col2_x, "SMART CONTROL", control_items),
     ]:
-        # Card background
-        c.setFillColor(NAVY_2)
+        c.setFillColor(PANEL)
         c.roundRect(col_x, y - box_h, col_w, box_h, 12, fill=1, stroke=0)
         c.setStrokeColor(LINE)
         c.roundRect(col_x, y - box_h, col_w, box_h, 12, fill=0, stroke=1)
-        # Heading
-        cy = y - 26
+        cy = y - 24
         draw_eyebrow(c, col_x + 22, cy, head_label)
         cy -= 26
         c.setFont(LATIN_B, 14)
-        c.setFillColor(white)
+        c.setFillColor(INK)
         c.drawString(col_x + 22, cy,
                      "What's standard" if head_label == "CONFIGURATION" else "Built-in intelligence")
         cy -= 26
-        # Items: bullet + bilingual
         for it_en, it_zh in items:
-            # bullet
             c.setFillColor(ACCENT)
             c.circle(col_x + 28, cy + 3, 2, fill=1, stroke=0)
             c.setFont(LATIN_B, 10)
-            c.setFillColor(white)
+            c.setFillColor(INK)
             c.drawString(col_x + 38, cy, it_en)
             cy -= 12
             c.setFont(CJK, 9)
-            c.setFillColor(SUBTLE)
+            c.setFillColor(MUTED)
             c.drawString(col_x + 38, cy, it_zh)
             cy -= 16
 
     y -= box_h + 28
 
-    # CTA strip (compact)
+    # CTA strip — brand blue
     card_h = 80
     c.setFillColor(BLUE)
     c.roundRect(MARGIN, y - card_h, W - 2 * MARGIN, card_h, 12, fill=1, stroke=0)
@@ -401,8 +483,9 @@ def config_page(c, page_num, total, series_label, series_code, config_items, con
 
     c.showPage()
 
+# ---------- text wrapping ----------
+
 def _wrap(text, width):
-    """Naive word-wrap for Latin text."""
     words = text.split()
     lines, cur = [], ""
     for w in words:
@@ -417,7 +500,6 @@ def _wrap(text, width):
     return lines
 
 def _wrap_cjk(text, width):
-    """Wrap CJK by character count."""
     return [text[i:i + width] for i in range(0, len(text), width)]
 
 # ========== GEC V CATALOG ==========
@@ -436,7 +518,8 @@ def gen_gec_v():
           "新風淨化天花式抽濕機",
           "Fresh air × dehumidification × HEPA filtration in one ceiling unit. Independent fresh-air valve, return-air valve, HEPA filter, and a 5-in-1 air detector — auto-switching across dehumidify, fresh-air, mixed, and intelligent modes.",
           "新風 × 抽濕 × HEPA 過濾，一台天花機完成。獨立新風閥、回風閥、HEPA 高效濾網與五合一空氣探測器，可於抽濕、新風、混合、智能四個模式之間自動切換。",
-          ["DBA-GEC30V", "DBA-GEC50V", "DBA-GEC70V", "DBA-GEC110V"], "30–110 L/day")
+          ["DBA-GEC30V", "DBA-GEC50V", "DBA-GEC70V", "DBA-GEC110V"], "30–110 L/day",
+          hero_image="ceiling-dba-gec50v.jpg")
 
     overview_page(c, 2, total, series_label, "GEC V",
                   "The GEC V Series is the flagship fresh-air ceiling dehumidifier engineered for Hong Kong's sub-tropical climate. It maintains target humidity while continuously introducing HEPA-filtered outdoor air — solving CO2 build-up, PM2.5, cooking odours, and humidity in a single concealed unit. The 5-in-1 air detector reads PM2.5, CO2, VOC, temperature, and relative humidity, switching modes automatically.",
@@ -459,11 +542,12 @@ def gen_gec_v():
                       "Offices & retail (zone-distributed)",
                       "Premium residences in Mid-Levels",
                       "Concealed false-ceiling installation",
-                  ])
+                  ],
+                  hero_image="ceiling-dba-gec110v.jpg")
 
     specs_page(c, 3, total, series_label, "GEC V",
                models=[
-                   {"name": "DBA-GEC30V", "specs": {
+                   {"name": "DBA-GEC30V", "image": "ceiling-dba-gec30v.jpg", "specs": {
                        "cap_30": "30 L/day", "cap_27": "10.8 L/day",
                        "fresh_air": "0–170 CMH", "airflow": "350 CMH",
                        "coverage": "200–400 sq ft", "noise": "38/50 dB(A)",
@@ -473,7 +557,7 @@ def gen_gec_v():
                        "ports": "Ø146 mm × 3", "refrig": "R134a / 260 g",
                        "filter": "HEPA + SS mesh", "comm": "RS485 + Dry contact",
                    }},
-                   {"name": "DBA-GEC50V", "tag": "BESTSELLER", "specs": {
+                   {"name": "DBA-GEC50V", "tag": "BESTSELLER", "image": "ceiling-dba-gec50v.jpg", "specs": {
                        "cap_30": "50 L/day", "cap_27": "26.4 L/day",
                        "fresh_air": "0–225 CMH", "airflow": "450 CMH",
                        "coverage": "400–600 sq ft", "noise": "42/50 dB(A)",
@@ -483,7 +567,7 @@ def gen_gec_v():
                        "ports": "Ø146 mm × 3", "refrig": "R410A / 400 g",
                        "filter": "HEPA + SS mesh", "comm": "RS485 + Dry contact",
                    }},
-                   {"name": "DBA-GEC70V", "specs": {
+                   {"name": "DBA-GEC70V", "image": "ceiling-dba-gec70v.jpg", "specs": {
                        "cap_30": "70 L/day", "cap_27": "—",
                        "fresh_air": "0–250 CMH", "airflow": "500 CMH",
                        "coverage": "600–800 sq ft", "noise": "45/50 dB(A)",
@@ -493,7 +577,7 @@ def gen_gec_v():
                        "ports": "Ø146 mm × 3", "refrig": "R410A",
                        "filter": "HEPA + SS mesh", "comm": "RS485 + Dry contact",
                    }},
-                   {"name": "DBA-GEC110V", "specs": {
+                   {"name": "DBA-GEC110V", "image": "ceiling-dba-gec110v.jpg", "specs": {
                        "cap_30": "110 L/day", "cap_27": "52.8 L/day",
                        "fresh_air": "0–450 CMH", "airflow": "900 CMH",
                        "coverage": "800–1,200 sq ft", "noise": "45/50 dB(A)",
@@ -564,7 +648,8 @@ def gen_utc():
           "超薄天花式抽濕機",
           "A 200 mm slim profile that disappears into any false ceiling. Pure precision dehumidification from 39 dB(A) — quieter than a hushed conversation. UV-C lamp, WiFi App, RS485 BMS, and Hong Kong Grade 1 Energy Label on the entry model.",
           "200 mm 超薄機身，無聲融入假天花。專注於高效抽濕，39 dB(A) 起 — 比安靜對話更輕。配備 UV-C 殺菌、WiFi App、RS485 BMS，UTC20 取得香港一級能源標籤。",
-          ["DBA-UTC20", "DBA-UTC68", "DBA-UTC120"], "20–120 L/day")
+          ["DBA-UTC20", "DBA-UTC68", "DBA-UTC120"], "20–120 L/day",
+          hero_image="ceiling-dba-utc20-1.jpg")
 
     overview_page(c, 2, total, series_label, "UTC",
                   "The UTC Series prioritises absolute precision dehumidification with a near-silent profile. At only 200 mm thick (UTC20), it disappears into any false ceiling and is ideal as a humidity supplement when fresh-air ventilation is already handled separately. UV-C sterilisation, scheduled timers, WiFi App, and RS485 Modbus BMS are standard.",
@@ -587,11 +672,12 @@ def gen_utc():
                       "Wine storage rooms",
                       "Storage & wardrobes",
                       "Server / equipment closets",
-                  ])
+                  ],
+                  hero_image="ceiling-dba-utc68-1.jpg")
 
     specs_page(c, 3, total, series_label, "UTC",
                models=[
-                   {"name": "DBA-UTC20", "tag": "HK GRADE 1", "specs": {
+                   {"name": "DBA-UTC20", "tag": "HK GRADE 1", "image": "ceiling-dba-utc20-1.jpg", "specs": {
                        "cap_30": "20 L/day", "cap_27": "9.9 L/day",
                        "airflow": "220 CMH", "coverage": "200–400 sq ft",
                        "noise": "39 dB(A)", "static": "80 Pa",
@@ -601,7 +687,7 @@ def gen_utc():
                        "ports": "Ø146 mm", "refrig": "R134a / 230 g",
                        "uvc": "UV-C lamp", "comm": "WiFi + RS485",
                    }},
-                   {"name": "DBA-UTC68", "specs": {
+                   {"name": "DBA-UTC68", "image": "ceiling-dba-utc68-1.jpg", "specs": {
                        "cap_30": "68 L/day", "cap_27": "42 L/day",
                        "airflow": "500 CMH", "coverage": "800–1,000 sq ft",
                        "noise": "48 dB(A)", "static": "100 Pa",
@@ -611,7 +697,7 @@ def gen_utc():
                        "ports": "Ø146 mm", "refrig": "R410A / 600 g",
                        "uvc": "UV-C lamp", "comm": "WiFi + RS485",
                    }},
-                   {"name": "DBA-UTC120", "specs": {
+                   {"name": "DBA-UTC120", "image": "ceiling-dba-utc120-1.jpg", "specs": {
                        "cap_30": "120 L/day", "cap_27": "53 L/day",
                        "airflow": "890 CMH", "coverage": "1,300–1,500 sq ft",
                        "noise": "50 dB(A)", "static": "100 Pa",
@@ -683,7 +769,8 @@ def gen_gec_commercial():
           "商用天花式抽濕機",
           "High static pressure ducted ceiling dehumidifiers built for large floors and multi-room distribution. RS485 BMS standard, 68 to 550 L/day capacity. Engineered for offices, retail, hotel ballrooms, indoor pools, and large clubhouses.",
           "為大空間設計的高靜壓商用天花機 — 商廈辦公室、零售商舖、酒店宴會廳、室內泳池、大型會所。RS485 BMS 標配，68 至 550 公升 / 日抽濕量任選，多區管道分送。",
-          ["DBA-GEC68LD-HP", "DBA-GEC145LD-HP", "DBA-GEC280LD", "DBA-GEC400LD", "DBA-GEC550LD"], "68–550 L/day")
+          ["DBA-GEC68LD-HP", "DBA-GEC145LD-HP", "DBA-GEC280LD", "DBA-GEC400LD", "DBA-GEC550LD"], "68–550 L/day",
+          hero_image="ceiling-dba-gec145ld-1.jpg")
 
     overview_page(c, 2, total, series_label, "GEC",
                   "The GEC commercial ceiling series handles large floor plates and ducted multi-zone distribution that smaller residential units cannot serve. High static pressure (up to 80 Pa) drives air through long duct runs, while the stainless evaporator and pump drainage suit demanding industrial and commercial environments. Five capacity points cover everything from a 1,000 sq ft retail unit to a 5,000 sq ft hotel ballroom.",
@@ -706,39 +793,40 @@ def gen_gec_commercial():
                       "Indoor swimming pools",
                       "Clubhouses & banquet halls",
                       "Logistics & cold storage rooms",
-                  ])
+                  ],
+                  hero_image="ceiling-dba-gec280ld-1.jpg")
 
     specs_page(c, 3, total, series_label, "GEC",
                models=[
-                   {"name": "DBA-GEC68LD-HP", "specs": {
+                   {"name": "DBA-GEC68LD-HP", "image": "ceiling-dba-gec68ld-1.jpg", "specs": {
                        "capacity": "68 L/day", "coverage": "800–1,000 sq ft",
                        "airflow": "500 CMH", "noise": "49 dB(A)",
                        "dim": "970 × 525 × 345 mm", "weight": "—",
                        "supply": "220-240V / 50Hz", "uvc": "UV-C lamp",
                        "comm": "RS485 Modbus",
                    }},
-                   {"name": "DBA-GEC145LD-HP", "specs": {
+                   {"name": "DBA-GEC145LD-HP", "image": "ceiling-dba-gec145ld-1.jpg", "specs": {
                        "capacity": "145 L/day", "coverage": "1,500–1,700 sq ft",
                        "airflow": "1,200 CMH", "noise": "50 dB(A)",
                        "dim": "1,005 × 695 × 440 mm", "weight": "70 kg",
                        "supply": "220-240V / 50Hz", "uvc": "UV-C lamp",
                        "comm": "RS485 Modbus",
                    }},
-                   {"name": "DBA-GEC280LD", "specs": {
+                   {"name": "DBA-GEC280LD", "image": "ceiling-dba-gec280ld-1.jpg", "specs": {
                        "capacity": "280 L/day", "coverage": "2,500–3,000 sq ft",
                        "airflow": "1,700 CMH", "noise": "58 dB(A)",
                        "dim": "1,137 × 900 × 540 mm", "weight": "108 kg",
                        "supply": "380V 3N / 50Hz", "uvc": "—",
                        "comm": "RS485 Modbus",
                    }},
-                   {"name": "DBA-GEC400LD", "specs": {
+                   {"name": "DBA-GEC400LD", "image": "ceiling-dba-gec400ld-1.jpg", "specs": {
                        "capacity": "400 L/day", "coverage": "3,000–4,000 sq ft",
                        "airflow": "3,250 CMH", "noise": "65 dB(A)",
                        "dim": "1,270 × 1,200 × 605 mm", "weight": "210 kg",
                        "supply": "380V 3N / 50Hz", "uvc": "—",
                        "comm": "RS485 Modbus",
                    }},
-                   {"name": "DBA-GEC550LD", "specs": {
+                   {"name": "DBA-GEC550LD", "image": "ceiling-dba-gec550ld-1.jpg", "specs": {
                        "capacity": "550 L/day", "coverage": "4,000–5,000 sq ft",
                        "airflow": "3,250 CMH", "noise": "65 dB(A)",
                        "dim": "1,270 × 1,200 × 605 mm", "weight": "240 kg",
