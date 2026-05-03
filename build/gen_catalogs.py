@@ -527,7 +527,7 @@ def gen_gec_v():
 
     overview_page(c, 2, total, series_label, "GEC V",
                   "The GEC V Series is the flagship fresh-air ceiling dehumidifier engineered for Hong Kong's sub-tropical climate. It maintains target humidity while continuously introducing HEPA-filtered outdoor air — solving CO2 build-up, PM2.5, cooking odours, and humidity in a single concealed unit. The 5-in-1 air detector reads PM2.5, CO2, VOC, temperature, and relative humidity, switching modes automatically.",
-                  "GEC V 系列為 ERV.hk 旗艦新風天花式抽濕機，專為香港氣候研發。在維持空間濕度的同時，引入經 HEPA 過濾的潔淨新風 — 一機解決室內 CO2 累積、PM2.5、烹飪異味與潮濕問題。內置五合一空氣探測器自動偵測 PM2.5、CO2、VOC、溫度與濕度，並於四個模式之間智能切換。",
+                  "GEC V 系列為 DBA 旗艦新風天花式抽濕機，專為香港氣候研發。在維持空間濕度的同時，引入經 HEPA 過濾的潔淨新風 — 一機解決室內 CO2 累積、PM2.5、烹飪異味與潮濕問題。內置五合一空氣探測器自動偵測 PM2.5、CO2、VOC、溫度與濕度，並於四個模式之間智能切換。",
                   features=[
                       "Fresh-air valve · 0–450 CMH on demand",
                       "HEPA + stainless steel mesh filtration",
