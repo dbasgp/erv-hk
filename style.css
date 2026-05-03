@@ -691,9 +691,9 @@ html[lang^="zh"] .hd-label { font-size: 12px; letter-spacing: 0; }
   overflow: hidden;
   background: #fff;
 }
-.size-row { display: grid; grid-template-columns: 1.2fr 1.6fr 2fr; border-bottom: 1px solid var(--line); }
+.size-row { display: grid; grid-template-columns: 1fr 1.6fr 1.8fr; border-bottom: 1px solid var(--line); align-items: center; }
 .size-row:last-child { border-bottom: none; }
-.size-row span { padding: 18px 24px; font-size: 14.5px; border-right: 1px solid var(--line); }
+.size-row span { padding: 18px 24px; font-size: 14.5px; border-right: 1px solid var(--line); display: flex; align-items: center; min-height: 56px; }
 .size-row span:last-child { border-right: none; }
 .size-row.hd span {
   font-weight: 700;
