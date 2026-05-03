@@ -746,8 +746,23 @@ nav#nav.scrolled { background: rgba(255,255,255,0.96); border-bottom-color: rgba
   color: var(--ink);
 }
 .cmp-row.hd .cmp-us { background: var(--primary); color: #fff; }
-.cmp-row .cmp-us { background: rgba(10,138,156,0.06); font-weight: 600; color: var(--primary-dark); }
+.cmp-row .cmp-us { background: rgba(0,35,255,0.06); font-weight: 600; color: var(--primary-dark); }
 .cmp-row .cmp-them { color: var(--muted); }
+.cmp-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  background: #ffe5e5;
+  color: #d33636;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+}
 
 /* ========== FAQ ========== */
 .faq { padding: 130px 0; background: var(--bg-alt); }
