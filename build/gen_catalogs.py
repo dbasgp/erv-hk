@@ -388,21 +388,24 @@ def specs_page(c, page_num, total, series_label, series_code, models, columns):
     y -= row_h
     hline(c, table_x, y, table_x + table_w, color=LINE, w=0.6)
 
-    # Body rows
+    # Body rows — sized so the bilingual two-line label fits inside the row
     n_rows = len(columns)
-    body_h = 22 if n_rows >= 12 else (24 if n_rows >= 10 else 26)
+    body_h = 26 if n_rows >= 12 else (28 if n_rows >= 10 else 30)
     label_size = 9 if n_rows >= 12 else 9.5
+    zh_size = label_size - 1.5
     val_size = 9.5 if n_rows >= 12 else 10
+    en_top_pad = 11           # baseline distance from row top for EN
+    zh_gap = label_size       # distance from EN baseline down to ZH baseline
     for ridx, (key, label_en, label_zh) in enumerate(columns):
         if ridx % 2 == 0:
             c.setFillColor(PANEL)
             c.rect(table_x, y - body_h, table_w, body_h, fill=1, stroke=0)
         c.setFont(LATIN_B, label_size)
         c.setFillColor(INK)
-        c.drawString(table_x + 12, y - 13, label_en)
-        c.setFont(CJK, label_size - 1)
+        c.drawString(table_x + 12, y - en_top_pad, label_en)
+        c.setFont(CJK, zh_size)
         c.setFillColor(SUBTLE)
-        c.drawString(table_x + 12, y - 13 - (label_size + 1), label_zh)
+        c.drawString(table_x + 12, y - en_top_pad - zh_gap, label_zh)
         for i, m in enumerate(models):
             cx = table_x + label_w + i * col_w
             val = m["specs"].get(key, "—")
@@ -442,6 +445,8 @@ def config_page(c, page_num, total, series_label, series_code,
     col2_x = MARGIN + col_w + 24
     box_h = 360
 
+    text_x_offset = 38
+    right_pad = 18
     for col_x, head_label, items in [
         (col1_x, "CONFIGURATION", config_items),
         (col2_x, "SMART CONTROL", control_items),
@@ -458,16 +463,27 @@ def config_page(c, page_num, total, series_label, series_code,
         c.drawString(col_x + 22, cy,
                      "What's standard" if head_label == "CONFIGURATION" else "Built-in intelligence")
         cy -= 26
+        text_max_w = col_w - text_x_offset - right_pad
         for it_en, it_zh in items:
             c.setFillColor(ACCENT)
             c.circle(col_x + 28, cy + 3, 2, fill=1, stroke=0)
-            c.setFont(LATIN_B, 10)
+            # Auto-fit EN bullet to card width
+            en_size = 10
+            c.setFont(LATIN_B, en_size)
+            while c.stringWidth(it_en, LATIN_B, en_size) > text_max_w and en_size > 7.5:
+                en_size -= 0.5
+                c.setFont(LATIN_B, en_size)
             c.setFillColor(INK)
-            c.drawString(col_x + 38, cy, it_en)
+            c.drawString(col_x + text_x_offset, cy, it_en)
             cy -= 12
-            c.setFont(CJK, 9)
+            # Auto-fit ZH bullet too (CJK can also overflow)
+            zh_size = 9
+            c.setFont(CJK, zh_size)
+            while c.stringWidth(it_zh, CJK, zh_size) > text_max_w and zh_size > 7.5:
+                zh_size -= 0.5
+                c.setFont(CJK, zh_size)
             c.setFillColor(MUTED)
-            c.drawString(col_x + 38, cy, it_zh)
+            c.drawString(col_x + text_x_offset, cy, it_zh)
             cy -= 16
 
     y -= box_h + 28
@@ -629,7 +645,7 @@ def gen_gec_v():
                     ("RS485 Modbus BMS interface",        "RS485 Modbus 樓宇管理接口"),
                     ("Schedule on/off + power-off memory","定時開關機 + 斷電記憶"),
                     ("Dry-contact input + fault detection","乾接點輸入 + 故障偵測"),
-                    ("PM2.5 / CO₂ / VOC / T / RH sensing","PM2.5 / CO₂ / VOC / 溫濕度感應"),
+                    ("PM2.5 / CO2 / VOC / T / RH sensing","PM2.5 / CO2 / VOC / 溫濕度感應"),
                     ("Auto mode-switch by air quality",   "依空氣質素智能切換模式"),
                 ])
 
