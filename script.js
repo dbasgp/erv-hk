@@ -36,6 +36,26 @@ const revealObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 revealEls.forEach((el) => revealObs.observe(el));
 
+// ========== Hero product parallax + nav scroll progress ==========
+const heroProductImg = document.querySelector('.hero-product img');
+const navEl = document.getElementById('nav');
+let parallaxFrame = null;
+const onParallaxScroll = () => {
+  if (parallaxFrame) return;
+  parallaxFrame = requestAnimationFrame(() => {
+    const y = window.scrollY;
+    if (heroProductImg && y < window.innerHeight * 1.2) {
+      heroProductImg.style.setProperty('--parallax', `${y * 0.18}px`);
+    }
+    if (navEl) {
+      navEl.classList.toggle('scrolled', y > 12);
+    }
+    parallaxFrame = null;
+  });
+};
+window.addEventListener('scroll', onParallaxScroll, { passive: true });
+onParallaxScroll();
+
 // ========== Sticky tech-stage image switching ==========
 const techSteps = document.querySelectorAll('.tech-step');
 const techImgs = document.querySelectorAll('.tech-img');
