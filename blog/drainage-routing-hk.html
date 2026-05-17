@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
-  <link rel="stylesheet" href="blog.css?v=20260517" />
+  <link rel="stylesheet" href="blog.css?v=20260518a" />
   <link rel="icon" type="image/svg+xml" href="../images/logo-erv.svg" />
 </head>
 <body>
@@ -60,12 +60,12 @@
           <span lang-zh>6 分鐘閱讀</span><span lang-en>6 min read</span>
         </p>
         <h1>
-          <span lang-zh>冷凝水排放方案 — 重力、內置水泵或外置水箱。</span>
-          <span lang-en>Drainage — gravity, pump, or external tank.</span>
+          <span lang-zh>冷凝水排放方案 — 內置水泵與重力排放。</span>
+          <span lang-en>Drainage — integrated pump and gravity fall.</span>
         </h1>
         <p class="lead">
-          <span lang-zh>香港假天花漏水之維修費用,輕則數千港元,重則需全面重建整個吊頂結構。九成以上之漏水個案,根源並非設備本身故障,而是排水管路設計不當所致。</span>
-          <span lang-en>HK ceiling leak repairs run from a few thousand HKD to a full ceiling rebuild. Nine out of ten leaks aren't equipment failure — they're a drain line that was routed wrong.</span>
+          <span lang-zh>DBA 天花式抽濕機之排水方式由機型決定。單相機型一律配備 1.8 米內置水泵,三相機型則以重力排放。本文說明兩種方式之正確走線。</span>
+          <span lang-en>DBA ceiling dehumidifier drainage is fixed by the unit. Single-phase models all use a 1.8 m integrated pump; three-phase models drain by gravity. This is how each method should be routed.</span>
         </p>
       </div>
     </header>
@@ -76,165 +76,108 @@
 
     <div class="prose" lang-zh>
 
-      <h2>三種主要排水路線</h2>
+      <p>DBA 天花式抽濕機之排水方式並非由項目決定,而是由機型決定。於 M&amp;E 階段確認正確之排水方式後,後續走線即按該方式進行設計。</p>
 
-      <p>香港天花式抽濕機之排水方案,基本上可歸納為以下三種:</p>
+      <h2>單相機型:1.8 米內置水泵</h2>
 
-      <ol>
-        <li><strong>重力直接下降</strong> — 機身正上方即為浴室、廚房或外牆位置,排水管可直接連接至既有之地台排水口。此方案最為簡單可靠,凡有條件採用者均應優先選用。</li>
-        <li><strong>水泵提升橫向輸送</strong> — 由機身內置水泵將水提升至假天花頂部,再水平輸送至較遠之排水口。此為香港住宅最常見之排水方案。</li>
-        <li><strong>水泵搭配外置水箱</strong> — 商用項目、酒店及會所多採用此方案。內置水泵將水送至外置中繼水箱,再由水箱獨立配置之水泵輸送至大樓主排水系統。</li>
-      </ol>
-
-      <h2>香港住宅常見之排水終點</h2>
-
+      <p>所有單相天花式抽濕機均標配 1.8 米揚程之內置冷凝水泵,涵蓋以下機型:</p>
       <ul>
-        <li><strong>浴室既有冷氣冷凝水管</strong> — 大部份新建單位之浴室吊頂內已預設冷氣排水管,可分支接駁使用</li>
-        <li><strong>廚房地台排水口</strong> — 較少採用,因走線需穿越樓底較高之位置</li>
-        <li><strong>外牆冷氣排水口</strong> — 部份新建樓宇已預留此接駁口,可將排水引至外牆</li>
-        <li><strong>樓梯間或公用走廊地台</strong> — 並不建議採用,惟部份舊式樓宇可能僅剩此選項可用</li>
+        <li>UTC 超薄天花系列 — UTC20、UTC68、UTC120</li>
+        <li>GEC V 新風淨化天花系列 — GEC30V、GEC50V、GEC70V、GEC110V</li>
+        <li>GEC 商用天花單相機型 — GEC68LD-HP、GEC145LD-HP</li>
       </ul>
 
-      <h2>水泵揚程規格</h2>
+      <p>水泵負責將冷凝水提升至機身上方最高 1.8 米處,其後管路改由重力承接,延伸至排放終點。</p>
 
-      <p>DBA 各機型之水泵揚程規格如下:</p>
-      <table>
-        <tr><th>機型</th><th>水泵揚程</th></tr>
-        <tr><td>UTC20 / 68 / 120</td><td>1.8 米</td></tr>
-        <tr><td>GEC V(全系列型號)</td><td>1.8 米</td></tr>
-        <tr><td>GEC68LD-HP / 145LD-HP</td><td>1.8 米</td></tr>
-        <tr><td>GEC280LD 以上</td><td>5 米</td></tr>
-      </table>
+      <h2>正確走線:先上升,再下降</h2>
 
-      <p>須注意:揚程並非單指垂直提升高度,尚須包括以下阻力損失:</p>
-      <ul>
-        <li>水平段水管:每米約損失 5 cm 揚程</li>
-        <li>每個 90° 彎頭:約損失 10 cm 揚程</li>
-        <li>每個三通接駁:約損失 15 cm 揚程</li>
-      </ul>
-
-      <p>舉例說明:採用 UTC68(揚程 1.8 米),垂直提升 1.5 米、水平延伸 6 米、設置 3 個彎頭。總揚程需求 = 1.5 + 0.3 + 0.3 = 2.1 米,已超出機型上限。此時須縮短水管路徑,或加裝外置中繼水箱。</p>
-
-      <h2>香港工程現場常見之設計失誤</h2>
+      <p>正確之走線方式為:排水管由機身輸出口起向上垂直延伸至高點(可達 1.8 米揚程上限),於該高點轉向後,再以重力下降至排放終點。高點形成一個倒 U 形,作用如下:</p>
 
       <ul>
-        <li><strong>排水管自機身上爬至樓板頂部後再向下延伸</strong> — 中間之最高點將形成積水點,長期累積會孳生生物膜,逐步堵塞管路</li>
-        <li><strong>提升段未配置單向止逆閥</strong> — 每當水泵停止運轉,提升段內之水即會倒流回機身水盤,觸發水泵重複啟動</li>
-        <li><strong>排水管直接接駁大樓主排污管而未設空氣中斷</strong> — 此舉違反水務署及屋宇署之相關規定,並會引入污水氣味回流</li>
-        <li><strong>排水管未進行保溫處理</strong> — 假天花空間溫度達 30°C 時,水管外壁將凝結水珠並滴落,造成假天花受潮損壞</li>
+        <li>高點打斷任何由排放終點之倒流(防止虹吸現象),冷凝水無法逆向回流至機身</li>
+        <li>高點以下之路段純粹依靠重力,延伸長度幾乎不受限制,毋須水泵額外負荷</li>
       </ul>
+
+      <p>若排水管自機身輸出口起直接向下延伸,再水平橫走,則:水泵承擔不必要之負荷;管路缺乏防倒流之高點;倒流發生時無法阻擋。此為香港工程現場最常出現之失誤。</p>
 
       <figure>
         <img src="../images/ceiling-dba-gec145ld-2.jpg" alt="DBA-GEC145LD-HP 內置水泵及水盤" />
-        <figcaption>GEC145 內置水泵及水盤之細部結構。即使內置止逆閥之可靠性甚高,亦無法取代正確之水管設計。</figcaption>
+        <figcaption>GEC145 之內置水泵及水盤特寫。所有單相天花式機型均配備相同規格之 1.8 米揚程水泵。</figcaption>
       </figure>
 
-      <h2>何種情況下需要配置外置中繼水箱?</h2>
+      <h2>三相機型:重力排放</h2>
 
-      <ul>
-        <li>垂直提升高度超過 1.5 米</li>
-        <li>水平延伸距離超過 10 米</li>
-        <li>商用項目之高流量需求(每日產生水量超過 200 升)</li>
-        <li>多部機組共用同一條主排水管</li>
-      </ul>
+      <p>較大型之三相商用天花式機型 — GEC280LD、GEC400LD、GEC550LD — 並無內置水泵,改以純重力方式排水。排水管必須自機身輸出口起持續向下傾斜至排放終點,中間不可有任何向上提升之段落。</p>
 
-      <p>外置中繼水箱(如 Aspen Mini Lime 或 Sauermann SI-30 系列)配備獨立水泵,揚程可達 5 至 10 米,且流量較大。香港商用項目中,凡採用 GEC V 70 / 110 及 GEC145 以上之機型,幾乎均會配置外置水箱。</p>
+      <p>三相機型之安裝位置須於 M&amp;E 階段配合確認,確保由機身至排放終點之走線在物理上能維持連續下降。</p>
 
-      <h2>調試階段之必要程序</h2>
+      <h2>排放終點</h2>
 
-      <p>安裝完成後,以下步驟絕不可省略:</p>
+      <p>無論採用何種方式,排水管最終均接駁至大樓既有之冷凝水路徑 — 包括冷凝水主管、地台排水口,或鄰近之冷氣機冷凝水管。處理方式與一般風機盤管(FCU)之冷凝水排放相同,並須符合水務署及屋宇署之相關規定。</p>
+
+      <h2>調試程序</h2>
+
+      <p>安裝完成後須執行以下檢查:</p>
       <ol>
-        <li>啟動除濕模式運行 30 分鐘,並前往排水終點實地觀察水流情況</li>
-        <li>自水盤檢修口注入 500 ml 清水,確認 60 秒內可順利排出</li>
-        <li>停機後留意水管聲響 — 若聽到水流倒流之聲,即表示缺少單向止逆閥</li>
-        <li>24 小時後檢查假天花空間,確認無任何潮濕痕跡方可正式驗收</li>
+        <li>啟動除濕模式運行 30 分鐘,並前往排放終點實地確認有正常水流</li>
+        <li>對於配備水泵之機型,留意水泵運轉情況 — 每隔數分鐘短暫啟動為正常;若持續運轉,表示走線存在問題</li>
+        <li>24 小時後檢查假天花內部,確認無任何潮濕痕跡</li>
       </ol>
 
-      <div class="callout">
-        <h4>20% 餘量原則</h4>
-        <p>計算總揚程需求時,須確保不超過水泵額定揚程之 80%。剩餘之 20% 餘量,用以涵蓋濾網老化、管內生物膜累積,以及水泵長期使用後之效能衰減。</p>
-      </div>
+      <p>如項目之排水走線存在限制,可向本公司提供平面圖,本工程團隊將協助繪製可行之排水路徑方案。</p>
 
     </div>
 
     <div class="prose" lang-en>
 
-      <h2>Three drainage patterns</h2>
+      <p>DBA ceiling dehumidifier drainage is decided by the unit, not the project. Confirm the right method at M&amp;E stage and the routing follows from there.</p>
 
-      <p>HK ceiling dehumidifier drainage breaks into three patterns:</p>
+      <h2>Single-phase units: 1.8 m integrated pump</h2>
 
-      <ol>
-        <li><strong>Direct gravity drop:</strong> unit sits above a bathroom, kitchen, or exterior wall with an existing drain. Cleanest, most reliable. Use it whenever you can.</li>
-        <li><strong>Pump and traverse:</strong> internal pump lifts water above the ceiling, then runs laterally to a remote drop. Most common HK residential pattern.</li>
-        <li><strong>Pump + external tank:</strong> standard for commercial, hotels, clubhouses. Unit's internal pump feeds an external tank with its own larger pump, which handles the building-side lift.</li>
-      </ol>
-
-      <h2>Common HK drain destinations</h2>
-
+      <p>Every single-phase ceiling model ships with an integrated condensate pump rated for 1.8 m of head:</p>
       <ul>
-        <li><strong>Bathroom FCU condensate pipe</strong> — most new flats have one; branch into it</li>
-        <li><strong>Kitchen floor trap</strong> — uncommon because of routing</li>
-        <li><strong>Exterior wall AC drain outlet</strong> — some new builds provide one</li>
-        <li><strong>Common corridor floor drain</strong> — last resort, common in older estates</li>
+        <li>UTC ultra-thin ceiling — UTC20, UTC68, UTC120</li>
+        <li>GEC V fresh-air ceiling — GEC30V, GEC50V, GEC70V, GEC110V</li>
+        <li>GEC commercial single-phase — GEC68LD-HP, GEC145LD-HP</li>
       </ul>
 
-      <h2>Pump head ratings</h2>
+      <p>The pump lifts condensate up to 1.8 m above the unit, after which gravity carries it the rest of the way to the discharge.</p>
 
-      <table>
-        <tr><th>Unit</th><th>Pump head</th></tr>
-        <tr><td>UTC20 / 68 / 120</td><td>1.8 m</td></tr>
-        <tr><td>GEC V (all sizes)</td><td>1.8 m</td></tr>
-        <tr><td>GEC68LD-HP / 145LD-HP</td><td>1.8 m</td></tr>
-        <tr><td>GEC280LD and up</td><td>5 m</td></tr>
-      </table>
+      <h2>Correct routing: rise to a high point, then fall</h2>
 
-      <p>Head is not just vertical lift; it also includes:</p>
-      <ul>
-        <li>Horizontal hose: ≈ 5 cm of head per metre</li>
-        <li>Each 90° bend: ≈ 10 cm of head</li>
-        <li>Each tee fitting: ≈ 15 cm of head</li>
-      </ul>
-
-      <p>Example: UTC68 (1.8 m head) lifting 1.5 m vertical, running 6 m horizontal, through 3 bends. Total demand = 1.5 + 0.3 + 0.3 = 2.1 m. Over the limit. Either shorten the run or add an external tank.</p>
-
-      <h2>Common HK mistakes</h2>
+      <p>The drain line should leave the unit and rise vertically to a high point at or near the 1.8 m pump head. From that high point, the line falls by gravity to the discharge. The inverted-U at the top of the run serves two purposes:</p>
 
       <ul>
-        <li><strong>Line climbs above unit, then runs back down</strong> — the high point becomes a water trap, biofilm grows, line eventually closes</li>
-        <li><strong>No check valve on a lifted line</strong> — every time the pump stops, water siphons back to the drain pan, the pump restarts, repeat</li>
-        <li><strong>Direct connection to building sewer without air gap</strong> — violates PUB / HK Buildings Department code and brings sewer gas into the void</li>
-        <li><strong>Uninsulated drain line</strong> — 30°C plenum + cool condensate = exterior condensation drips, wet plasterboard</li>
+        <li>The high point breaks any back-siphon from the discharge — water cannot flow upstream into the unit</li>
+        <li>The downward gravity section can be any practical length without further pump load</li>
       </ul>
+
+      <p>Dropping the line straight down from the unit and traversing horizontally is the most common HK installation error. It loads the pump unnecessarily and leaves no high-point break to prevent back-siphon.</p>
 
       <figure>
         <img src="../images/ceiling-dba-gec145ld-2.jpg" alt="DBA-GEC145LD-HP internal pump and drain pan" />
-        <figcaption>The GEC145 internal pump and drain pan. Even reliable internal check valves cannot rescue a badly routed line.</figcaption>
+        <figcaption>The GEC145 internal pump and drain pan. Every single-phase ceiling model uses the same 1.8 m pump.</figcaption>
       </figure>
 
-      <h2>When you need an external tank</h2>
+      <h2>Three-phase units: gravity fall</h2>
 
-      <ul>
-        <li>Vertical lift above 1.5 m</li>
-        <li>Horizontal run above 10 m</li>
-        <li>High commercial flow (>200 L/day)</li>
-        <li>Multiple units sharing one drain main</li>
-      </ul>
+      <p>The larger three-phase commercial ceiling models — GEC280LD, GEC400LD, GEC550LD — have no integrated pump. Drainage is gravity-only. The line must slope continuously downward from the unit to the discharge with no rising section.</p>
 
-      <p>External tanks (Aspen Mini Lime, Sauermann SI-30, equivalent) have their own pumps, 5–10 m head, higher flow rate. Standard on HK commercial projects with GEC V 70/110 or anything in the GEC145+ class.</p>
+      <p>Three-phase units must be sited where a continuous fall to the discharge is physically possible. Confirm this during M&amp;E coordination, before installation.</p>
 
-      <h2>Mandatory commissioning steps</h2>
+      <h2>Discharge point</h2>
+
+      <p>Both methods discharge into an existing condensate route the building already supports — a condensate main, floor trap, or adjacent FCU drain. Treat the dehumidifier's drain the same way the project treats fan-coil condensate, with local PUB and Buildings Department requirements observed.</p>
+
+      <h2>Commissioning</h2>
 
       <ol>
-        <li>Run dehumidify for 30 minutes; physically walk to the drain destination and confirm water flow</li>
-        <li>Pour 500 ml into the pan via the test port; confirm discharge within 60 seconds</li>
-        <li>Switch off and listen — if water trickles back, the check valve is missing or wrong</li>
-        <li>Inspect the ceiling void 24 hours later; sign off only if dry</li>
+        <li>Run the unit in dehumidify mode for 30 minutes and confirm water reaches the discharge</li>
+        <li>For pumped units, observe pump cycling — short bursts every few minutes are normal; continuous running indicates a route problem</li>
+        <li>Inspect the ceiling void after 24 hours of use — it should be dry</li>
       </ol>
 
-      <div class="callout">
-        <h4>The 20% margin rule</h4>
-        <p>Total head demand should never exceed 80% of pump rating. The remaining 20% covers biofilm growth, filter loading, and pump wear over time.</p>
-      </div>
+      <p>If a project's drainage route is constrained, send us the floor plan and the engineering team will sketch a working layout.</p>
 
     </div>
 
