@@ -140,12 +140,13 @@ html[lang^="zh"] .ta-hero h1 { letter-spacing: 0.01em; }
 .ta-card-img {
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: var(--bg-alt);
+  background: #fff;
+  border-bottom: 1px solid var(--line);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 22px;
+  padding: 26px;
 }
 .ta-card-img img {
   max-width: 100%;
@@ -235,12 +236,14 @@ html[lang^="zh"] .article-hero h1 { letter-spacing: 0.005em; }
 .article-cover img {
   display: block;
   max-width: 100%;
-  max-height: 560px;
+  max-height: 520px;
   width: auto;
   height: auto;
   margin: 0 auto;
   border-radius: 18px;
-  background: var(--bg-alt);
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 24px;
 }
 
 .prose {
