@@ -27,4 +27,53 @@
   <url><loc>https://www.erv.hk/products/dba-gec280ld.html</loc><priority>0.70</priority></url>
   <url><loc>https://www.erv.hk/products/dba-gec400ld.html</loc><priority>0.70</priority></url>
   <url><loc>https://www.erv.hk/products/dba-gec550ld.html</loc><priority>0.70</priority></url>
+  <!-- Blog -->
+  <url>
+    <loc>https://www.erv.hk/blog/</loc>
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/?lang=en" />
+  </url>
+  <url>
+    <loc>https://www.erv.hk/blog/ceiling-installation-hk.html</loc>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/ceiling-installation-hk.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/ceiling-installation-hk.html?lang=en" />
+  </url>
+  <url>
+    <loc>https://www.erv.hk/blog/fresh-air-vs-traditional-dehumidifier.html</loc>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/fresh-air-vs-traditional-dehumidifier.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/fresh-air-vs-traditional-dehumidifier.html?lang=en" />
+  </url>
+  <url>
+    <loc>https://www.erv.hk/blog/thc-climate-control-vs-aircon.html</loc>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/thc-climate-control-vs-aircon.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/thc-climate-control-vs-aircon.html?lang=en" />
+  </url>
+  <url>
+    <loc>https://www.erv.hk/blog/ducting-design-hk.html</loc>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/ducting-design-hk.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/ducting-design-hk.html?lang=en" />
+  </url>
+  <url>
+    <loc>https://www.erv.hk/blog/drainage-routing-hk.html</loc>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/drainage-routing-hk.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/drainage-routing-hk.html?lang=en" />
+  </url>
+  <url>
+    <loc>https://www.erv.hk/blog/sizing-hk-residential.html</loc>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/sizing-hk-residential.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/sizing-hk-residential.html?lang=en" />
+  </url>
+  <url>
+    <loc>https://www.erv.hk/blog/maintenance-tropical-hk.html</loc>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://www.erv.hk/blog/maintenance-tropical-hk.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.erv.hk/blog/maintenance-tropical-hk.html?lang=en" />
+  </url>
 </urlset>

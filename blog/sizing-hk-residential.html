@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>香港住宅與會所的容量配置 | ERV.hk 博客</title>
+  <meta name="description" content="由幾百呎細單位到千幾呎大宅,如何計算濕度負荷及選擇 GEC V / UTC 機型。實際容量計算方法。Sizing dehumidifiers for HK homes and clubhouses." />
+  <meta name="keywords" content="香港抽濕機選型, 容量計算, GEC V 30 50 70 110, DBA UTC 選型, dehumidifier sizing Hong Kong" />
+  <link rel="canonical" href="https://www.erv.hk/blog/sizing-hk-residential.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="香港住宅與會所的容量配置 | Sizing for HK homes" />
+  <meta property="og:image" content="https://www.erv.hk/images/ceiling-dba-gec70v.jpg" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Sizing for HK homes and clubhouses","image":"https://www.erv.hk/images/ceiling-dba-gec70v.jpg","author":{"@type":"Organization","name":"ERV.hk"},"publisher":{"@type":"Organization","name":"ERV.hk","logo":{"@type":"ImageObject","url":"https://www.erv.hk/images/logo-erv.svg"}},"datePublished":"2026-04-01","inLanguage":["zh-Hant","en"],"mainEntityOfPage":"https://www.erv.hk/blog/sizing-hk-residential.html"}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+  <link rel="icon" type="image/svg+xml" href="../images/logo-erv.svg" />
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="container">
+      <div class="tb-left"><span class="tb-mute"><span lang-zh>香港 · 澳門 · 大灣區工程供應</span><span lang-en>Hong Kong · Macau · GBA</span></span></div>
+      <div class="tb-right">
+        <a href="https://wa.me/85284043880" target="_blank" rel="noopener">WhatsApp · +852 8404 3880</a>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button data-lang="zh" class="active">繁中</button>
+          <button data-lang="en">EN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="../" class="logo"><img src="../images/logo-erv.svg" alt="ERV.hk" /></a>
+      <ul class="nav-links">
+        <li><a href="../#system"><span lang-zh>系統</span><span lang-en>System</span></a></li>
+        <li><a href="../#products"><span lang-zh>產品</span><span lang-en>Products</span></a></li>
+        <li><a href="./"><span lang-zh>博客</span><span lang-en>Blog</span></a></li>
+        <li><a href="../#quote" class="nav-cta"><span lang-zh>免費諮詢</span><span lang-en>Get a quote</span></a></li>
+      </ul>
+      <button class="nav-mobile-btn" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <ul class="mobile-nav" id="mobileNav">
+      <li><a href="../#products"><span lang-zh>產品</span><span lang-en>Products</span></a></li>
+      <li><a href="./"><span lang-zh>博客</span><span lang-en>Blog</span></a></li>
+      <li><a href="../#quote"><span lang-zh>免費諮詢</span><span lang-en>Get a quote</span></a></li>
+    </ul>
+  </nav>
+
+  <article>
+    <header class="article-hero">
+      <div class="container">
+        <p class="article-meta">
+          <span lang-zh>容量計算</span><span lang-en>Sizing</span>
+          <span class="dot">·</span>
+          <span lang-zh>7 分鐘閱讀</span><span lang-en>7 min read</span>
+        </p>
+        <h1>
+          <span lang-zh>香港住宅與會所的容量配置。</span>
+          <span lang-en>Sizing for HK homes and clubhouses.</span>
+        </h1>
+        <p class="lead">
+          <span lang-zh>「我間屋幾呎,需要邊個型號?」 — 這條問題的答案,從不是只看平方呎。同樣 800 呎,4 人之家配寵物與 1 人獨居的負荷差天共地。</span>
+          <span lang-en>"What model do I need for my flat?" — the answer is never just floor area. The same 800 sq ft with a family of four and pets is a different load from one person living alone.</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="article-cover">
+      <img src="../images/ceiling-dba-gec70v.jpg" alt="DBA-GEC70V fresh-air ceiling dehumidifier" />
+    </div>
+
+    <div class="prose" lang-zh>
+
+      <h2>濕度負荷由哪裡來?</h2>
+
+      <p>四大來源:</p>
+      <ul>
+        <li><strong>外氣滲入</strong> — 即使密閉式住宅,門窗縫隙仍有 0.2-0.4 ACH(空氣換氣次數)。香港夏季外氣 32°C / 85% RH,內部 25°C / 55% RH,1,000 呎單位每日約 8-15 升</li>
+        <li><strong>人體呼吸</strong> — 每人每小時釋出 100-150g 水分。四人家庭睡覺 8 小時 = 約 4 升,日常活動再加 3-5 升</li>
+        <li><strong>日常活動</strong> — 沖涼一次釋出 0.5-1 升;煮飯一次 0.3-0.5 升;曬衫一籃(2-3 公斤濕重)約 1.5-2.5 升</li>
+        <li><strong>植物與寵物</strong> — 一棵中型 fiddle-leaf fig 每日 0.2 升;一缸金魚每日蒸發 1-3 升</li>
+      </ul>
+
+      <h2>典型香港住宅負荷</h2>
+
+      <table>
+        <tr><th>單位類型</th><th>面積</th><th>日均濕度負荷</th><th>建議機型</th></tr>
+        <tr><td>細單位 (一人住)</td><td>200-300 呎</td><td>3-6 升/日</td><td>GEC30V / UTC20</td></tr>
+        <tr><td>1-2 房單位 (2 人住)</td><td>300-500 呎</td><td>6-12 升/日</td><td>GEC30V 或 GEC50V</td></tr>
+        <tr><td>2-3 房單位 (3-4 人住)</td><td>500-800 呎</td><td>12-20 升/日</td><td>GEC50V 或 GEC70V</td></tr>
+        <tr><td>大宅 / 連天台</td><td>800-1200 呎</td><td>20-35 升/日</td><td>GEC70V 或 GEC110V</td></tr>
+        <tr><td>會所 / 大廈大堂</td><td>1500+ 呎</td><td>40+ 升/日</td><td>GEC145LD-HP 或 GEC280LD</td></tr>
+      </table>
+
+      <h2>1.5 倍餘量原則</h2>
+
+      <p>計算出日均負荷後,選擇容量大約 1.5 倍的機型。例如負荷 15 升/日,應選 20-25 升/日容量的機型。原因:</p>
+      <ul>
+        <li>機型不會 24 小時滿負荷運轉 — 較安靜,壽命更長</li>
+        <li>潮濕季節(2-4 月迴南天)負荷可能突增 50-80%</li>
+        <li>機型銘牌容量是 30°C / 80% RH 測試值,實際室溫 25°C / 55% RH 環境下,實際抽濕能力會下降 30-40%</li>
+      </ul>
+
+      <figure>
+        <img src="../images/ceiling-dba-gec110v.jpg" alt="DBA-GEC110V largest fresh-air ceiling model" />
+        <figcaption>GEC110V 是新風天花式抽濕系列最大型號,服務 800-1,200 呎大宅或會所主活動區。</figcaption>
+      </figure>
+
+      <h2>特殊情況加碼</h2>
+
+      <ul>
+        <li><strong>地下單位 / 半地下</strong> — 土壤水分滲入,加倍計算</li>
+        <li><strong>有大型水族缸</strong> — 每缸 1-3 升/日,加大一級</li>
+        <li><strong>常曬衫</strong> — 每籃加 2 升/日</li>
+        <li><strong>有皮草、皮具、樂器收藏</strong> — 對 RH 要求較嚴(50-55%),需要更精準的機型,考慮 THC 恆溫恆濕系列</li>
+      </ul>
+
+      <h2>會所及商用考量</h2>
+
+      <p>會所、健身房、酒店大堂的負荷與住宅不同:</p>
+      <ul>
+        <li>高人流 — 每位活動中的成人每小時釋出 200-300g 水汽(運動時更多)</li>
+        <li>頻繁開關大門 — 外氣滲入大幅增加</li>
+        <li>裝飾性綠植 — 高大綠植每株每日 0.5-1 升</li>
+      </ul>
+
+      <p>香港會所典型負荷:1,500 呎健身房,日間 20 人輪流使用,日均負荷 60-80 升 — 應選 GEC145LD-HP(145 升/日)或兩台 GEC70V 分區。</p>
+
+      <div class="callout">
+        <h4>60 秒選型法</h4>
+        <p>實用面積(呎)× 0.018 = 基線日均濕度負荷(升/日)<br />每常住人加 1.5 升/日<br />曬衫、地下單位、水族缸再加 3-5 升/日<br />總數 × 1.5 = 應選機型容量<br />比對 GEC V 系列容量表,選最接近的一級。</p>
+      </div>
+
+      <p>對你的單位適合哪款機型仍有疑問?<a href="../#quote">填寫表單</a>,我們上門勘測後提供書面建議。</p>
+
+    </div>
+
+    <div class="prose" lang-en>
+
+      <h2>Where does moisture load come from?</h2>
+
+      <p>Four sources:</p>
+      <ul>
+        <li><strong>Outside air infiltration</strong> — even in sealed flats, doors and windows leak at 0.2–0.4 ACH. HK summer outside at 32°C / 85% RH versus inside at 25°C / 55% RH gives roughly 8–15 L/day for a 1,000 sq ft flat</li>
+        <li><strong>Occupant respiration</strong> — each person releases 100–150 g/hour. A family of four sleeping 8 hours ≈ 4 L; another 3–5 L during waking hours</li>
+        <li><strong>Daily activities</strong> — one shower releases 0.5–1 L; one cooking session 0.3–0.5 L; a load of damp laundry (2–3 kg wet) drying indoors releases 1.5–2.5 L</li>
+        <li><strong>Plants and pets</strong> — a medium fiddle-leaf fig adds 0.2 L/day; a small aquarium evaporates 1–3 L/day</li>
+      </ul>
+
+      <h2>Typical HK residential loads</h2>
+
+      <table>
+        <tr><th>Unit type</th><th>Area</th><th>Daily load</th><th>Recommended model</th></tr>
+        <tr><td>Studio (1 person)</td><td>200–300 sq ft</td><td>3–6 L/day</td><td>GEC30V / UTC20</td></tr>
+        <tr><td>1–2 bedroom (2 ppl)</td><td>300–500 sq ft</td><td>6–12 L/day</td><td>GEC30V or GEC50V</td></tr>
+        <tr><td>2–3 bedroom (3–4 ppl)</td><td>500–800 sq ft</td><td>12–20 L/day</td><td>GEC50V or GEC70V</td></tr>
+        <tr><td>Penthouse / large home</td><td>800–1,200 sq ft</td><td>20–35 L/day</td><td>GEC70V or GEC110V</td></tr>
+        <tr><td>Clubhouse / lobby</td><td>1,500+ sq ft</td><td>40+ L/day</td><td>GEC145LD-HP or GEC280LD</td></tr>
+      </table>
+
+      <h2>The 1.5× rule</h2>
+
+      <p>Calculate daily load, then pick a unit rated about 1.5× that. Load 15 L/day → pick a 20–25 L/day unit. Why:</p>
+      <ul>
+        <li>The unit avoids running at 100% duty 24/7 — quieter and longer-lived</li>
+        <li>Humid season (Feb–Apr 'wui naam tin') can spike loads 50–80%</li>
+        <li>Nameplate capacity is measured at 30°C / 80% RH; at 25°C / 55% RH real-world conditions, capacity drops 30–40%</li>
+      </ul>
+
+      <figure>
+        <img src="../images/ceiling-dba-gec110v.jpg" alt="DBA-GEC110V largest fresh-air ceiling model" />
+        <figcaption>The GEC110V is the largest in the fresh-air ceiling range — serving 800–1,200 sq ft homes or clubhouse main zones.</figcaption>
+      </figure>
+
+      <h2>Bump up for special cases</h2>
+
+      <ul>
+        <li><strong>Ground floor / partial basement</strong> — moisture migration through walls, double the calculated load</li>
+        <li><strong>Large aquariums</strong> — add a model size per tank</li>
+        <li><strong>Regular indoor laundry drying</strong> — add 2 L/day per load</li>
+        <li><strong>Leather, fur, instrument collections</strong> — needs tighter RH band (50–55%); consider the THC climate-control range</li>
+      </ul>
+
+      <h2>Clubhouse and commercial</h2>
+
+      <p>Clubhouse, gym, and hotel-lobby loads differ from residential:</p>
+      <ul>
+        <li>High occupancy — each active adult releases 200–300 g/hour (more during exercise)</li>
+        <li>Frequent door cycling — much higher outside air infiltration</li>
+        <li>Decorative plants — large indoor trees add 0.5–1 L per plant per day</li>
+      </ul>
+
+      <p>Typical HK clubhouse: 1,500 sq ft gym with 20 rotating users daily ≈ 60–80 L/day. Pick a GEC145LD-HP (145 L/day) or two GEC70V split by zone.</p>
+
+      <div class="callout">
+        <h4>The 60-second sizing method</h4>
+        <p>Floor area in sq ft × 0.018 = baseline L/day<br />Add 1.5 L/day per resident occupant<br />Add 3–5 L/day for laundry, basement, or aquarium<br />Multiply by 1.5 to pick the unit<br />Match to the nearest GEC V capacity above.</p>
+      </div>
+
+      <p>Still unsure? <a href="../#quote">Send us a brief</a> and we will survey on site and return a written recommendation.</p>
+
+    </div>
+
+    <section class="article-cta">
+      <div class="container">
+        <p class="eyebrow center"><span lang-zh>項目諮詢</span><span lang-en>Project enquiry</span></p>
+        <h3><span lang-zh>需要選型建議?</span><span lang-en>Want a sized recommendation?</span></h3>
+        <p><span lang-zh>送上單位平面圖,我們計算後推薦機型。</span><span lang-en>Send the floor plan; we will run the maths and recommend.</span></p>
+        <a href="../#quote" class="btn-pill"><span lang-zh>免費諮詢</span><span lang-en>Request a quote</span></a>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="container">
+        <h3><span lang-zh>繼續閱讀</span><span lang-en>Keep reading</span></h3>
+        <div class="related-grid">
+          <a href="fresh-air-vs-traditional-dehumidifier.html" class="related-card">
+            <p class="tag"><span lang-zh>系統比較</span><span lang-en>Comparison</span></p>
+            <h4><span lang-zh>新風淨化抽濕機 vs 傳統抽濕機</span><span lang-en>Fresh-air vs traditional dehumidifier</span></h4>
+          </a>
+          <a href="ceiling-installation-hk.html" class="related-card">
+            <p class="tag"><span lang-zh>安裝</span><span lang-en>Installation</span></p>
+            <h4><span lang-zh>香港天花式抽濕機安裝實錄</span><span lang-en>Installing a ceiling dehumidifier in HK</span></h4>
+          </a>
+          <a href="thc-climate-control-vs-aircon.html" class="related-card">
+            <p class="tag"><span lang-zh>系統比較</span><span lang-en>Comparison</span></p>
+            <h4><span lang-zh>THC 恆溫恆濕機 vs 冷氣 + 抽濕機</span><span lang-en>THC vs split AC + dehumidifier</span></h4>
+          </a>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../images/logo-erv.svg" alt="ERV.hk" class="footer-logo-img" />
+          <p><span lang-zh>香港天花式新風抽濕系統專家。</span><span lang-en>Hong Kong specialist for ceiling-mount fresh-air dehumidifier systems.</span></p>
+        </div>
+        <div class="footer-cols">
+          <div class="fcol">
+            <h4><span lang-zh>產品</span><span lang-en>Range</span></h4>
+            <ul>
+              <li><a href="../#products">GEC V · <span lang-zh>新風天花</span><span lang-en>Fresh-air ceiling</span></a></li>
+              <li><a href="../#products">THC · <span lang-zh>恆濕氣候</span><span lang-en>Climate control</span></a></li>
+              <li><a href="../#products">UTC · <span lang-zh>超薄天花</span><span lang-en>Ultra-thin ceiling</span></a></li>
+            </ul>
+          </div>
+          <div class="fcol">
+            <h4><span lang-zh>資源</span><span lang-en>Resources</span></h4>
+            <ul>
+              <li><a href="./"><span lang-zh>博客</span><span lang-en>Blog</span></a></li>
+              <li><a href="../#catalogs"><span lang-zh>下載型錄</span><span lang-en>Catalogs</span></a></li>
+            </ul>
+          </div>
+          <div class="fcol">
+            <h4><span lang-zh>聯絡</span><span lang-en>Contact</span></h4>
+            <ul>
+              <li><a href="https://wa.me/85284043880" target="_blank" rel="noopener">WhatsApp · +852 8404 3880</a></li>
+              <li><a href="mailto:erv@erv.hk">erv@erv.hk</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 ERV.hk · <span lang-zh>香港環境電氣有限公司</span><span lang-en>HK Environmental Electrical Appliance Limited</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>

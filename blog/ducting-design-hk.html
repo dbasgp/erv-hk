@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>香港假天花的風喉設計 | ERV.hk 博客</title>
+  <meta name="description" content="香港假天花淨高常常只有 250-350mm。如何在有限空間內鋪設風喉、維持靜壓、保持風量。Ducting design for tight Hong Kong plenums." />
+  <meta name="keywords" content="香港風喉設計, 假天花風喉, 天花式抽濕機風喉, 外靜壓, DBA UTC ducting, Hong Kong ductwork dehumidifier" />
+  <link rel="canonical" href="https://www.erv.hk/blog/ducting-design-hk.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="香港假天花的風喉設計 | Ducting design in HK plenums" />
+  <meta property="og:image" content="https://www.erv.hk/images/ceiling-dba-utc120-1.jpg" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Ducting design inside HK plenums","image":"https://www.erv.hk/images/ceiling-dba-utc120-1.jpg","author":{"@type":"Organization","name":"ERV.hk"},"publisher":{"@type":"Organization","name":"ERV.hk","logo":{"@type":"ImageObject","url":"https://www.erv.hk/images/logo-erv.svg"}},"datePublished":"2026-03-18","inLanguage":["zh-Hant","en"],"mainEntityOfPage":"https://www.erv.hk/blog/ducting-design-hk.html"}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+  <link rel="icon" type="image/svg+xml" href="../images/logo-erv.svg" />
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="container">
+      <div class="tb-left"><span class="tb-mute"><span lang-zh>香港 · 澳門 · 大灣區工程供應</span><span lang-en>Hong Kong · Macau · GBA</span></span></div>
+      <div class="tb-right">
+        <a href="https://wa.me/85284043880" target="_blank" rel="noopener">WhatsApp · +852 8404 3880</a>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button data-lang="zh" class="active">繁中</button>
+          <button data-lang="en">EN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="../" class="logo"><img src="../images/logo-erv.svg" alt="ERV.hk" /></a>
+      <ul class="nav-links">
+        <li><a href="../#system"><span lang-zh>系統</span><span lang-en>System</span></a></li>
+        <li><a href="../#products"><span lang-zh>產品</span><span lang-en>Products</span></a></li>
+        <li><a href="./"><span lang-zh>博客</span><span lang-en>Blog</span></a></li>
+        <li><a href="../#quote" class="nav-cta"><span lang-zh>免費諮詢</span><span lang-en>Get a quote</span></a></li>
+      </ul>
+      <button class="nav-mobile-btn" onclick="toggleNav()" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+    <ul class="mobile-nav" id="mobileNav">
+      <li><a href="../#products"><span lang-zh>產品</span><span lang-en>Products</span></a></li>
+      <li><a href="./"><span lang-zh>博客</span><span lang-en>Blog</span></a></li>
+      <li><a href="../#quote"><span lang-zh>免費諮詢</span><span lang-en>Get a quote</span></a></li>
+    </ul>
+  </nav>
+
+  <article>
+    <header class="article-hero">
+      <div class="container">
+        <p class="article-meta">
+          <span lang-zh>風喉設計</span><span lang-en>Ducting</span>
+          <span class="dot">·</span>
+          <span lang-zh>7 分鐘閱讀</span><span lang-en>7 min read</span>
+        </p>
+        <h1>
+          <span lang-zh>香港假天花的風喉設計。</span>
+          <span lang-en>Ducting design inside HK plenums.</span>
+        </h1>
+        <p class="lead">
+          <span lang-zh>香港住宅假天花淨高常見只有 250-350mm,需要塞風喉、雪種喉、噴淋、電纜、再加抽濕機本身 — 風喉設計變成毫米級的取捨遊戲。</span>
+          <span lang-en>HK residential plenums are commonly 250–350 mm clear. Add ductwork, refrigerant pipes, sprinkler runs, cabling, and the dehumidifier itself, and ducting design becomes a millimetre-by-millimetre trade-off.</span>
+        </p>
+      </div>
+    </header>
+
+    <div class="article-cover">
+      <img src="../images/ceiling-dba-utc120-1.jpg" alt="DBA-UTC120 ducted ceiling dehumidifier" />
+    </div>
+
+    <div class="prose" lang-zh>
+
+      <h2>外靜壓是甚麼?</h2>
+
+      <p>每部天花式抽濕機都有一個「外靜壓限值」(External Static Pressure, ESP) — 即風機可承受的風喉系統阻力。超過這個數值,風量會明顯下降,抽濕能力跟住下降。DBA 機型的 ESP:</p>
+      <ul>
+        <li>UTC20 / 68 / 120 — 約 30-40 Pa</li>
+        <li>GEC V (30/50/70/110) — 約 60-80 Pa</li>
+        <li>GEC68LD-HP / 145LD-HP — 約 80-120 Pa</li>
+        <li>GEC280LD 以上 — 約 150 Pa</li>
+      </ul>
+
+      <p>香港住宅 UTC 系列大部份只跑 1-2 個出風口,通常不會接近上限。但會所、酒店大廳等使用 GEC V 或商用 GEC 鋪 4-6 個出風口的項目,就要認真計算。</p>
+
+      <h2>香港常用風喉類型</h2>
+
+      <ul>
+        <li><strong>絕緣鋁箔軟管</strong> — 最常用。安裝容易,但每米靜壓損失約 1.5-2.5 Pa</li>
+        <li><strong>螺旋鍍鋅鋼風喉</strong> — 商用項目較多,阻力低(每米 0.5-1.0 Pa),但需更多假天花空間及人手安裝</li>
+        <li><strong>方形鋼風喉</strong> — 大型商用,可貼樓底,但需大量裁切及保溫</li>
+      </ul>
+
+      <h2>每個元件的靜壓損失</h2>
+
+      <p>計算總靜壓的方法 — 把所有元件累加:</p>
+      <ul>
+        <li>軟管直管:每米 1.5-2.5 Pa</li>
+        <li>軟管 90° 急彎:每個 10-15 Pa</li>
+        <li>鋼喉 90° 大彎:每個 3-5 Pa</li>
+        <li>送風口(4 向擴散器):5-15 Pa</li>
+        <li>回風口 + 濾網(乾淨):15-25 Pa</li>
+        <li>回風口 + 濾網(用了半年):40-60 Pa</li>
+      </ul>
+
+      <p>設計時應以「濾網變髒」的數字計算,而非「新濾網」 — 否則安裝後 6 個月,風量就會跌得很明顯。</p>
+
+      <h2>香港假天花的實際處理</h2>
+
+      <p>常見處理策略:</p>
+      <ul>
+        <li><strong>單口直送</strong> — 機身與唯一送風口距離 1-2 米,UTC20 / UTC68 適用。最簡單,靜壓損失最小。</li>
+        <li><strong>單口短軟管 + 4 向擴散器</strong> — 機身藏於走廊上方,軟管 2-3 米送到客廳中央。最普及的設計。</li>
+        <li><strong>分支結構</strong> — 一台 GEC V 70 服務客廳 + 主臥 + 書房。從機身出風口拉一條主管,再分支至各房。需仔細平衡各支管的長度與風口大小。</li>
+      </ul>
+
+      <figure>
+        <img src="../images/ceiling-dba-utc68-2.jpg" alt="DBA-UTC68 with side return air outlet" />
+        <figcaption>UTC68 採用側面回風 + 側面送風配置,適合香港狹長型假天花設計。</figcaption>
+      </figure>
+
+      <h2>風喉直徑選擇</h2>
+
+      <p>保持風速 < 4 m/s。香港住宅常用尺寸:</p>
+      <table>
+        <tr><th>機型</th><th>風量</th><th>最少直徑</th></tr>
+        <tr><td>UTC20</td><td>220 CMH</td><td>150 mm</td></tr>
+        <tr><td>UTC68 / GEC50V</td><td>500 CMH</td><td>200 mm</td></tr>
+        <tr><td>UTC120 / GEC70V</td><td>890 CMH</td><td>250 mm</td></tr>
+        <tr><td>GEC145LD-HP</td><td>1200 CMH</td><td>300 mm</td></tr>
+      </table>
+
+      <h2>保溫</h2>
+
+      <p>香港夏季假天花溫度可達 30-35°C,而風喉內送風溫度約 18-22°C。如不保溫,風喉外壁會凝水,長時間下會浸壞旁邊的木板、石膏板。所有送風段風喉必須保溫;香港最常用是預先保溫的鋁箔軟管,內裡有 25mm 玻璃棉。</p>
+
+      <div class="callout">
+        <h4>70-90% 原則</h4>
+        <p>設計時讓總靜壓計算結果落在機型 ESP 的 70-90% 範圍。低於 70% 浪費了部份機型成本;超過 90% 沒有預留濾網老化空間。</p>
+      </div>
+
+    </div>
+
+    <div class="prose" lang-en>
+
+      <h2>What is external static pressure?</h2>
+
+      <p>Every ceiling dehumidifier has a maximum external static pressure (ESP) — the fan's tolerance for duct resistance. Exceed it and airflow falls, capacity falls. DBA's ESP ratings:</p>
+      <ul>
+        <li>UTC20 / 68 / 120 — 30–40 Pa</li>
+        <li>GEC V (30/50/70/110) — 60–80 Pa</li>
+        <li>GEC68LD-HP / 145LD-HP — 80–120 Pa</li>
+        <li>GEC280LD and up — 150 Pa</li>
+      </ul>
+
+      <p>Most HK residential UTC installs only run one or two grilles, so ESP is rarely an issue. Clubhouse and hotel lobby projects using GEC V or commercial GEC with 4–6 grilles need real calculation.</p>
+
+      <h2>Common duct types in HK</h2>
+
+      <ul>
+        <li><strong>Insulated aluminium-foil flex:</strong> the workhorse. Easy install but loses 1.5–2.5 Pa per metre.</li>
+        <li><strong>Spiral galvanised rigid:</strong> common in commercial. Lower loss (0.5–1.0 Pa/m) but needs more plenum space and skilled installation.</li>
+        <li><strong>Rectangular sheet metal:</strong> large commercial only. Can hug the slab but requires fabrication and added insulation.</li>
+      </ul>
+
+      <h2>Pressure losses per element</h2>
+
+      <p>Total static = sum of all losses:</p>
+      <ul>
+        <li>Flex straight: 1.5–2.5 Pa/m</li>
+        <li>Flex 90° sharp bend: 10–15 Pa each</li>
+        <li>Rigid 90° long-radius bend: 3–5 Pa each</li>
+        <li>Supply grille (4-way diffuser): 5–15 Pa</li>
+        <li>Return grille + clean filter: 15–25 Pa</li>
+        <li>Return grille + 6-month-old filter: 40–60 Pa</li>
+      </ul>
+
+      <p>Always design with the dirty filter number, not the clean one — otherwise airflow noticeably drops six months after install.</p>
+
+      <h2>HK plenum strategies</h2>
+
+      <ul>
+        <li><strong>Direct single supply:</strong> unit 1–2 m from the only supply grille. Works for UTC20 / UTC68. Simplest, lowest loss.</li>
+        <li><strong>Short flex + 4-way diffuser:</strong> unit hidden above a corridor, 2–3 m of flex reaches a diffuser in the living room. Most popular HK pattern.</li>
+        <li><strong>Branched:</strong> one GEC V 70 feeding living + main bedroom + study. Trunk from the unit, branches to each zone. Branch lengths and grille sizes need balancing.</li>
+      </ul>
+
+      <figure>
+        <img src="../images/ceiling-dba-utc68-2.jpg" alt="DBA-UTC68 with side return outlet" />
+        <figcaption>The UTC68's side-return / side-supply configuration suits HK's narrow plenum geometries.</figcaption>
+      </figure>
+
+      <h2>Duct sizing</h2>
+
+      <p>Keep velocity under 4 m/s. Typical HK residential sizes:</p>
+      <table>
+        <tr><th>Unit</th><th>Airflow</th><th>Min diameter</th></tr>
+        <tr><td>UTC20</td><td>220 CMH</td><td>150 mm</td></tr>
+        <tr><td>UTC68 / GEC50V</td><td>500 CMH</td><td>200 mm</td></tr>
+        <tr><td>UTC120 / GEC70V</td><td>890 CMH</td><td>250 mm</td></tr>
+        <tr><td>GEC145LD-HP</td><td>1,200 CMH</td><td>300 mm</td></tr>
+      </table>
+
+      <h2>Insulation</h2>
+
+      <p>HK summer plenums hit 30–35°C; supply air is 18–22°C. Without insulation the duct skin condenses, eventually staining adjacent timber or plasterboard. All supply ducts must be insulated; the standard HK choice is pre-insulated foil flex with a 25 mm glass-wool core.</p>
+
+      <div class="callout">
+        <h4>The 70–90% rule</h4>
+        <p>Aim for total static between 70% and 90% of the unit's ESP. Under 70% means oversized fan capacity. Over 90% leaves no margin for filter loading.</p>
+      </div>
+
+    </div>
+
+    <section class="article-cta">
+      <div class="container">
+        <p class="eyebrow center"><span lang-zh>項目諮詢</span><span lang-en>Project enquiry</span></p>
+        <h3><span lang-zh>需要風喉設計協助?</span><span lang-en>Need a duct design done?</span></h3>
+        <p><span lang-zh>送上平面圖,我們會回覆推薦機型與風喉走向。</span><span lang-en>Send the floor plan; we will return a unit recommendation and a duct sketch.</span></p>
+        <a href="../#quote" class="btn-pill"><span lang-zh>免費諮詢</span><span lang-en>Request a quote</span></a>
+      </div>
+    </section>
+
+    <section class="related">
+      <div class="container">
+        <h3><span lang-zh>繼續閱讀</span><span lang-en>Keep reading</span></h3>
+        <div class="related-grid">
+          <a href="ceiling-installation-hk.html" class="related-card">
+            <p class="tag"><span lang-zh>安裝</span><span lang-en>Installation</span></p>
+            <h4><span lang-zh>香港天花式抽濕機安裝實錄</span><span lang-en>Installing a ceiling dehumidifier in HK</span></h4>
+          </a>
+          <a href="drainage-routing-hk.html" class="related-card">
+            <p class="tag"><span lang-zh>排水</span><span lang-en>Drainage</span></p>
+            <h4><span lang-zh>排水方案 — 重力、水泵或外置水箱</span><span lang-en>Drainage — gravity, pump, or external tank</span></h4>
+          </a>
+          <a href="sizing-hk-residential.html" class="related-card">
+            <p class="tag"><span lang-zh>容量</span><span lang-en>Sizing</span></p>
+            <h4><span lang-zh>香港住宅與會所的容量配置</span><span lang-en>Sizing for HK homes</span></h4>
+          </a>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="../images/logo-erv.svg" alt="ERV.hk" class="footer-logo-img" />
+          <p><span lang-zh>香港天花式新風抽濕系統專家。</span><span lang-en>Hong Kong specialist for ceiling-mount fresh-air dehumidifier systems.</span></p>
+        </div>
+        <div class="footer-cols">
+          <div class="fcol">
+            <h4><span lang-zh>產品</span><span lang-en>Range</span></h4>
+            <ul>
+              <li><a href="../#products">GEC V · <span lang-zh>新風天花</span><span lang-en>Fresh-air ceiling</span></a></li>
+              <li><a href="../#products">THC · <span lang-zh>恆濕氣候</span><span lang-en>Climate control</span></a></li>
+              <li><a href="../#products">UTC · <span lang-zh>超薄天花</span><span lang-en>Ultra-thin ceiling</span></a></li>
+            </ul>
+          </div>
+          <div class="fcol">
+            <h4><span lang-zh>資源</span><span lang-en>Resources</span></h4>
+            <ul>
+              <li><a href="./"><span lang-zh>博客</span><span lang-en>Blog</span></a></li>
+              <li><a href="../#catalogs"><span lang-zh>下載型錄</span><span lang-en>Catalogs</span></a></li>
+            </ul>
+          </div>
+          <div class="fcol">
+            <h4><span lang-zh>聯絡</span><span lang-en>Contact</span></h4>
+            <ul>
+              <li><a href="https://wa.me/85284043880" target="_blank" rel="noopener">WhatsApp · +852 8404 3880</a></li>
+              <li><a href="mailto:erv@erv.hk">erv@erv.hk</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 ERV.hk · <span lang-zh>香港環境電氣有限公司</span><span lang-en>HK Environmental Electrical Appliance Limited</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
